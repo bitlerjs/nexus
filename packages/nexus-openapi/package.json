@@ -1,0 +1,23 @@
+{
+  "name": "@bitlerjs/nexus-openapi",
+  "version": "1.0.0",
+  "main": "dist/exports.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch"
+  },
+  "devDependencies": {
+    "@bitlerjs/nexus-config": "workspace:*",
+    "openapi-types": "^12.1.3",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5"
+  },
+  "dependencies": {
+    "@bitlerjs/nexus": "workspace:*",
+    "@apidevtools/json-schema-ref-parser": "^11.9.0"
+  }
+}

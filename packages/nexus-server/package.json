@@ -1,0 +1,30 @@
+{
+  "name": "@bitlerjs/nexus-server",
+  "version": "1.0.0",
+  "main": "dist/exports.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch"
+  },
+  "devDependencies": {
+    "@bitlerjs/nexus-config": "workspace:*",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@bitlerjs/nexus": "workspace:*",
+    "@bitlerjs/nexus-socket": "workspace:*",
+    "@fastify/cors": "^10.0.2",
+    "@fastify/swagger": "^9.4.2",
+    "@fastify/type-provider-typebox": "^5.1.0",
+    "@fastify/websocket": "^11.0.2",
+    "@scalar/fastify-api-reference": "^1.25.115",
+    "ajv": "^8.17.1",
+    "fastify": "^5.2.1",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

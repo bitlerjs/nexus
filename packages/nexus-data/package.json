@@ -1,0 +1,25 @@
+{
+  "name": "@bitlerjs/nexus-data",
+  "version": "1.0.0",
+  "main": "dist/exports.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch"
+  },
+  "devDependencies": {
+    "@bitlerjs/nexus-config": "workspace:*",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@bitlerjs/nexus": "workspace:*",
+    "@electric-sql/pglite": "^0.2.16",
+    "@huggingface/transformers": "^3.3.2",
+    "knex": "^3.1.0",
+    "knex-pglite": "^0.11.0",
+    "pgvector": "^0.2.0"
+  }
+}

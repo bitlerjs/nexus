@@ -1,0 +1,9 @@
+/node_modules/
+/.turbo/
+**/.turbo/
+**/node_modules/
+**/dist/
+.env
+.gitignore
+packages/docker/data/
+/docker-compose.yaml

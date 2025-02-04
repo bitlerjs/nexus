@@ -1,0 +1,28 @@
+{
+  "name": "@bitlerjs/nexus-demo-backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "nexus-studio start",
+    "demo": "nexus-studio start",
+    "dev": "tsx --watch start.ts"
+  },
+  "devDependencies": {
+    "@bitlerjs/nexus-config": "workspace:*",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@bitlerjs/nexus": "workspace:*",
+    "@bitlerjs/nexus-data": "workspace:*",
+    "@bitlerjs/nexus-llm": "workspace:*",
+    "@bitlerjs/nexus-typescript": "workspace:*",
+    "@bitlerjs/nexus-studio": "workspace:*",
+    "@bitlerjs/nexus-openapi": "workspace:*",
+    "@bitlerjs/nexus-openai": "workspace:*",
+    "@bitlerjs/nexus-federated": "workspace:*",
+    "@bitlerjs/nexus-linear": "workspace:*",
+    "dotenv": "^16.4.7"
+  }
+}

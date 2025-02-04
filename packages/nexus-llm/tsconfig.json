@@ -1,0 +1,9 @@
+{
+  "extends": "@bitlerjs/nexus-config",
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "include": [
+    "src"
+  ]
+}
