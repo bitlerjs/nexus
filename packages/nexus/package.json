@@ -1,0 +1,25 @@
+{
+  "name": "@bitlerjs/nexus",
+  "version": "1.0.0",
+  "main": "dist/exports.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch"
+  },
+  "devDependencies": {
+    "@bitlerjs/nexus-config": "workspace:*",
+    "@types/lodash": "^4.17.15",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.15",
+    "@types/json-schema": "^7.0.15",
+    "ajv": "^8.17.1",
+    "lodash": "^4.17.21",
+    "nanoid": "^5.0.9"
+  }
+}

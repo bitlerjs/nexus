@@ -1,0 +1,28 @@
+{
+  "name": "@bitlerjs/nexus-react-ws",
+  "version": "1.0.0",
+  "main": "dist/exports.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch",
+    "generate-types": "tsx src/scripts/generate-types.ts"
+  },
+  "devDependencies": {
+    "@bitlerjs/nexus": "workspace:*",
+    "@bitlerjs/nexus-client": "workspace:*",
+    "@bitlerjs/nexus-config": "workspace:*",
+    "@bitlerjs/nexus-llm": "workspace:*",
+    "@types/react": "^18.3.18",
+    "react": "^18.3.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@bitlerjs/nexus-client-ws": "workspace:*",
+    "@tanstack/react-query": "^5.65.1"
+  }
+}

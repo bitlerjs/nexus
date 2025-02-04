@@ -1,0 +1,37 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        "public/**"
+      ],
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "./tsconfig.*",
+        "../../pnpm-lock.yaml"
+      ]
+    },
+    "test": {
+      "cache": false
+    },
+    "clean": {},
+    "dev": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "demo": {
+      "dependsOn": [
+        "^build"
+      ],
+      "persistent": true
+    }
+  }
+}

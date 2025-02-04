@@ -1,0 +1,24 @@
+{
+  "name": "@bitlerjs/nexus-client-ws",
+  "version": "1.0.0",
+  "main": "dist/exports.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch"
+  },
+  "devDependencies": {
+    "@bitlerjs/nexus-config": "workspace:*",
+    "@bitlerjs/nexus": "workspace:*",
+    "@bitlerjs/nexus-llm": "workspace:*",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@bitlerjs/nexus-client": "workspace:*",
+    "@bitlerjs/nexus-socket": "workspace:*",
+    "eventemitter3": "^5.0.1"
+  }
+}
