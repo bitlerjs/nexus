@@ -4,6 +4,7 @@ import { llmExtension } from '@bitlerjs/nexus-llm';
 import { openai } from '@bitlerjs/nexus-openai';
 import { typescript } from '@bitlerjs/nexus-typescript';
 import { linear } from '@bitlerjs/nexus-linear';
+import { homeassistant } from '@bitlerjs/nexus-homeassistant';
 
 import { todos } from './src/extension.js';
 
@@ -25,6 +26,10 @@ const config = defineConfig({
         'o1-mini': 'o1-mini',
         'o3-mini': 'o3-mini',
       },
+    }),
+    defineExtension(homeassistant, {
+      url: process.env.HOMEASSISTANT_URL!,
+      token: process.env.HOMEASSISTANT_TOKEN!,
     }),
   ],
 });

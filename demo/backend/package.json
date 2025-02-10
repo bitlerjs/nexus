@@ -23,6 +23,7 @@
     "@bitlerjs/nexus-openai": "workspace:*",
     "@bitlerjs/nexus-federated": "workspace:*",
     "@bitlerjs/nexus-linear": "workspace:*",
+    "@bitlerjs/nexus-homeassistant": "workspace:*",
     "dotenv": "^16.4.7"
   }
 }

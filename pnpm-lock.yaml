@@ -62,9 +62,12 @@ importers:
       '@bitlerjs/nexus-federated':
         specifier: workspace:*
         version: link:../../packages/nexus-federated
+      '@bitlerjs/nexus-homeassistant':
+        specifier: workspace:*
+        version: link:../../extensions/nexus-homeassistant
       '@bitlerjs/nexus-linear':
         specifier: workspace:*
-        version: link:../../packages/nexus-linear
+        version: link:../../extensions/nexus-linear
       '@bitlerjs/nexus-llm':
         specifier: workspace:*
         version: link:../../packages/nexus-llm
@@ -173,6 +176,44 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0(@types/node@22.13.1)(jiti@2.4.2)(lightningcss@1.29.1)(tsx@4.19.2)(yaml@2.7.0)
 
+  extensions/nexus-homeassistant:
+    dependencies:
+      '@bitlerjs/nexus':
+        specifier: workspace:*
+        version: link:../../packages/nexus
+      '@bitlerjs/nexus-data':
+        specifier: workspace:*
+        version: link:../../packages/nexus-data
+      '@linear/sdk':
+        specifier: ^38.0.0
+        version: 38.0.0
+      home-assistant-js-websocket:
+        specifier: ^9.4.0
+        version: 9.4.0
+    devDependencies:
+      '@bitlerjs/nexus-config':
+        specifier: workspace:*
+        version: link:../../packages/nexus-config
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.3
+
+  extensions/nexus-linear:
+    dependencies:
+      '@bitlerjs/nexus':
+        specifier: workspace:*
+        version: link:../../packages/nexus
+      '@linear/sdk':
+        specifier: ^38.0.0
+        version: 38.0.0
+    devDependencies:
+      '@bitlerjs/nexus-config':
+        specifier: workspace:*
+        version: link:../../packages/nexus-config
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.3
+
   packages/nexus:
     dependencies:
       '@sinclair/typebox':
@@ -280,22 +321,6 @@ importers:
       '@bitlerjs/nexus':
         specifier: workspace:*
         version: link:../nexus
-    devDependencies:
-      '@bitlerjs/nexus-config':
-        specifier: workspace:*
-        version: link:../nexus-config
-      typescript:
-        specifier: ^5.7.2
-        version: 5.7.3
-
-  packages/nexus-linear:
-    dependencies:
-      '@bitlerjs/nexus':
-        specifier: workspace:*
-        version: link:../nexus
-      '@linear/sdk':
-        specifier: ^38.0.0
-        version: 38.0.0
     devDependencies:
       '@bitlerjs/nexus-config':
         specifier: workspace:*
@@ -3909,6 +3934,9 @@ packages:
 
   highlightjs-vue@1.0.0:
     resolution: {integrity: sha512-PDEfEF102G23vHmPhLyPboFCD+BkMGu+GuJe2d9/eH4FsCwvgBpnc9n0pGE+ffKdph38s6foEZiEjdgHdzp+IA==}
+
+  home-assistant-js-websocket@9.4.0:
+    resolution: {integrity: sha512-312TuI63IfKf8G+iWvKmPYIdxWMNojwVk03o9OSpQFFDjSCNAYdCUfuPCFs73SuJ1Xpd4D1Eo11CB33MGMqZ+Q==}
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
@@ -10122,6 +10150,8 @@ snapshots:
   highlight.js@10.7.3: {}
 
   highlightjs-vue@1.0.0: {}
+
+  home-assistant-js-websocket@9.4.0: {}
 
   hookable@5.5.3: {}
 

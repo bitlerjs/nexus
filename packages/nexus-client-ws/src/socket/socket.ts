@@ -72,13 +72,23 @@ class Socket extends EventEmitter<SocketEvents> {
     payload: RequestPayload<TType>,
   ): Promise<RequestResponse<TType>> => {
     const socket = await this.getSocket();
+    const abortController = new AbortController();
     const request = createRequest(type, payload);
+    socket.addEventListener('message', ({ data }) => {
+      request.process(JSON.parse(data));
+    });
+    abortController.signal.addEventListener('abort', () => {
+      socket.removeEventListener('message', request.process);
+    });
     socket.addEventListener(
-      'message',
-      ({ data }) => {
-        request.process(JSON.parse(data));
+      'close',
+      () => {
+        abortController.abort();
+        request.reject(new Error('Socket closed'));
       },
-      {},
+      {
+        signal: abortController.signal,
+      },
     );
     socket.send(JSON.stringify(request.body));
     return request.promise;

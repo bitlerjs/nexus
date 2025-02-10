@@ -11,7 +11,7 @@ type DialogItem = {
   id: string;
   content?: unknown;
   timestamp: Date;
-  type: 'text' | 'json' | (string & {});
+  type: 'text' | 'json' | 'error' | (string & {});
   contiuations: Record<string, Record<string, unknown>>;
   toolsUsed?: {
     kind: string;
@@ -77,6 +77,24 @@ const useCreateConversation = (options: UseCreateConversationValues = {}) => {
         },
         {
           ...(mutationOptions || {}),
+          onError: (...args) => {
+            const [error] = args;
+            setDialog((prev) => {
+              return prev.map((item) => {
+                if (item.id === `system-${id}`) {
+                  return {
+                    ...item,
+                    role: 'assistant',
+                    content: error instanceof Error ? error.message : String(error),
+                    type: 'error',
+                    timestamp: new Date(),
+                  };
+                }
+                return item;
+              });
+            });
+            mutationOptions?.onError?.(...args);
+          },
           onSuccess: (...args) => {
             const [data] = args;
             setDialog((prev) => {

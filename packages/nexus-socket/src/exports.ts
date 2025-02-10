@@ -96,7 +96,11 @@ type RequestResponse<TType extends RequestType> = Static<(typeof requests)[TType
 const createRequest = <TType extends keyof typeof requests>(
   type: TType,
   payload: Static<(typeof requests)[TType]['input']>,
+  options: {
+    abortController?: AbortController;
+  } = {},
 ) => {
+  const { abortController } = options;
   const id = nanoid();
   const schema = requests[type];
   const { promise, resolve, reject } = createResolvable<Static<(typeof requests)[TType]['output']>>();
@@ -122,14 +126,18 @@ const createRequest = <TType extends keyof typeof requests>(
     }
     if ('status' in data.payload && data.payload.status === 'success' && 'data' in data.payload) {
       resolve(data.payload.data as Static<(typeof requests)[TType]['output']>);
+      abortController?.abort();
     } else if ('status' in data.payload && data.payload.status === 'error' && 'message' in data.payload) {
       reject(new Error(String(data.payload.message)));
+      abortController?.abort();
     }
   };
 
   return {
     schema,
     body,
+    resolve,
+    reject,
     promise,
     process,
   };

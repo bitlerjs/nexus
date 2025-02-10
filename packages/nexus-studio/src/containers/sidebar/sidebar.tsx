@@ -1,5 +1,5 @@
 import { Button, Divider, Listbox, ListboxItem, ListboxSection } from '@heroui/react';
-import { Bot, BotMessageSquare, LaptopMinimalCheck, Moon, PlayCircle, PlusCircle, Sun } from 'lucide-react';
+import { Bot, BotMessageSquare, LaptopMinimalCheck, Moon, Sun } from 'lucide-react';
 import { useAddScreen } from '../../features/screens/screens';
 import { useTheme } from 'next-themes';
 
@@ -12,8 +12,8 @@ const Sidebar = () => {
         <div className="flex items-center gap-2 px-2 pb-8">
           <Bot size={40} className="stroke-default-500 rotate-12" />
           <div>
-            <div className="text-4xl font-bold">Nexus</div>
-            <div className="text-xs text-default-500">Everything is an agent</div>
+            <div className="text-4xl font-bold">Nexus;</div>
+            <div className="text-xs text-default-500">@bitlerjs</div>
           </div>
         </div>
         <Divider />
