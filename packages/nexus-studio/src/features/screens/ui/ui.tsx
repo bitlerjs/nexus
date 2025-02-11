@@ -23,6 +23,7 @@ const ScreensContainer = () => {
                 <div className="flex gap-2 items-center">
                   {screen.title || id}
                   <Button
+                    as="div"
                     variant="light"
                     isIconOnly
                     size="sm"

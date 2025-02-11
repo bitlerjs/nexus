@@ -1,7 +1,7 @@
 type ModelDefinition = {
   kind: string;
   api: {
-    url?: string;
+    url?: string | undefined;
     key: string;
   };
   provider: string;

@@ -2,6 +2,7 @@ import { useQuery, QueryOptions } from '@tanstack/react-query';
 import { ServerDefinition } from '@bitlerjs/nexus-client-ws';
 
 import { useNexus } from '../provider/provider.js';
+import { useHasTask } from '../exports.js';
 
 import { TaskInput, TaskResponse } from './client.types.js';
 
@@ -20,12 +21,15 @@ const useTaskQuery = <T extends ServerDefinition, TKey extends keyof T['tasks']>
   kind: TKey;
   queryKey: readonly unknown[];
   input: T['tasks'][TKey]['input'];
+  enabled?: boolean;
   continuation?: Record<string, Record<string, unknown>>;
-}): ReturnType<QueryType<T, TKey>> => {
+}): ReturnType<QueryType<T, TKey>> & { available: boolean } => {
   const { client, queryClient } = useNexus<T>();
-  return useQuery(
+  const hasTask = useHasTask(kind as string);
+  const result = useQuery(
     {
       ...options,
+      enabled: hasTask && options.enabled,
       queryFn: async () => {
         const result = await client?.tasks.run(kind, input, continuation);
         return result;
@@ -33,6 +37,11 @@ const useTaskQuery = <T extends ServerDefinition, TKey extends keyof T['tasks']>
     },
     queryClient,
   );
+
+  return {
+    ...(result as any),
+    available: hasTask,
+  };
 };
 
 const createQueryHooks = <T extends ServerDefinition>() => {

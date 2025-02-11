@@ -1,11 +1,13 @@
 import { createTask, Type } from '@bitlerjs/nexus';
 
 import { HomeassistantService } from '../../services/services.ha.js';
+import { roomsBootstrap } from '../../bootstrap/bootstrap.rooms.js';
 
 const turnOff = createTask({
   kind: `homeassistant.lights.turn-off`,
   name: 'Turn off lights',
   description: 'Turn off the lights',
+  bootstrap: [roomsBootstrap],
   input: Type.Object({
     rooms: Type.Array(
       Type.String({

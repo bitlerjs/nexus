@@ -1,4 +1,4 @@
-import { Container, Continuation, RequestContext, TasksService } from '@bitlerjs/nexus';
+import { Bootstrap, Container, Continuation, RequestContext, TasksService } from '@bitlerjs/nexus';
 
 import { CompletionInput, type DialogItem } from '../schemas/schemas.completion.js';
 
@@ -8,7 +8,12 @@ const sanitizeString = (str: string) => {
   return str.replace(/[^a-zA-Z0-9_-]/g, '_').substr(0, 60);
 };
 
-const getDialog = (input: CompletionInput, continuation: Continuation) => {
+type GetDialogOptions = {
+  input: CompletionInput;
+  continuation: Continuation;
+  bootstrap: Bootstrap;
+};
+const getDialog = ({ input, continuation, bootstrap }: GetDialogOptions) => {
   const dialog: DialogItem[] = [];
 
   if (input.systemPrompt) {
@@ -17,12 +22,22 @@ const getDialog = (input: CompletionInput, continuation: Continuation) => {
       content: input.systemPrompt,
     });
   }
+  if (bootstrap.hasData) {
+    dialog.push({
+      role: 'system',
+      content: bootstrap.toText(),
+    });
+  }
   if (continuation.hasData) {
     dialog.push({
       role: 'system',
       content: continuation.toText(),
     });
   }
+  dialog.push({
+    role: 'system',
+    content: `The current time is ${new Date().toISOString()}.`,
+  });
   if (input.dialog) {
     dialog.push(...input.dialog);
   }

@@ -3,8 +3,10 @@ import { Container } from '../container/container.js';
 import { RequestContext } from '../request-context/request-context.js';
 import { parseWithSchema } from '../utils/schema.js';
 import { Sources } from '../sources/sources.js';
+import { EventsService } from '../events/events.js';
 
 import { Task } from './tasks.task.js';
+import { tasksUpdated } from './tasks.events.js';
 
 type RunOptions = {
   task: Task;
@@ -19,6 +21,8 @@ class TasksService {
 
   constructor(container: Container) {
     this.#container = container;
+    const eventsService = container.get(EventsService);
+    eventsService.register([tasksUpdated]);
   }
 
   public register = (tasks: Task<any, any>[]) => {

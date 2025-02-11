@@ -1,6 +1,8 @@
 import { Client, type ServerDefinition } from '@bitlerjs/nexus-client-ws';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { TasksProvider } from '../exports.js';
+import { EventsProvider } from '../events/events.js';
 
 type LoginOptions = {
   url: string;
@@ -81,7 +83,11 @@ type NexusProviderProps = NexusContextValue & {
 const NexusProvider = ({ children, ...props }: NexusProviderProps) => {
   return (
     <QueryClientProvider client={props.queryClient}>
-      <NexusContext.Provider value={props}>{children}</NexusContext.Provider>
+      <NexusContext.Provider value={props}>
+        <EventsProvider>
+          <TasksProvider>{children}</TasksProvider>
+        </EventsProvider>
+      </NexusContext.Provider>
     </QueryClientProvider>
   );
 };

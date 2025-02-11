@@ -2,6 +2,7 @@ import { useMutation, type MutationOptions } from '@tanstack/react-query';
 import { type ServerDefinition } from '@bitlerjs/nexus-client-ws';
 
 import { useNexus } from '../provider/provider.js';
+import { useHasTask } from '../exports.js';
 
 import { TaskResponse, TaskInput } from './client.types.js';
 
@@ -16,9 +17,10 @@ const useTaskMutation = <T extends ServerDefinition, TKey extends keyof T['tasks
   ...options
 }: MutationOptions<TaskResponse<T['tasks'][TKey]['output']>, unknown, TaskInput<T['tasks'][TKey]['input']>, unknown> & {
   kind: TKey;
-}): ReturnType<MutationType<T, TKey>> => {
+}): ReturnType<MutationType<T, TKey>> & { available: boolean } => {
   const { client, queryClient } = useNexus<T>();
-  return useMutation(
+  const hasTask = useHasTask(kind as string);
+  const result = useMutation(
     {
       ...options,
       mutationFn: async ({ input, continuation }) => {
@@ -31,6 +33,11 @@ const useTaskMutation = <T extends ServerDefinition, TKey extends keyof T['tasks
     },
     queryClient,
   );
+
+  return {
+    ...result,
+    available: hasTask,
+  };
 };
 
 const createMutationHooks = <T extends ServerDefinition>() => {

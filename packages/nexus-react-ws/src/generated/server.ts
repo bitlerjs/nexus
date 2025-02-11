@@ -40,8 +40,58 @@ export interface ServerSpecs {
         provider: string;
       }[];
     };
+    "configs.list": {
+      input: {};
+      output: {
+        kind: string;
+        name?: string;
+        description?: string;
+        hasValue: boolean;
+      }[];
+    };
+    "configs.set-value": {
+      input: {
+        kind: string;
+        value: unknown;
+      };
+      output: {
+        success: boolean;
+      };
+    };
+    "configs.get-value": {
+      input: {
+        kind: string;
+      };
+      output: unknown;
+    };
+    "configs.describe": {
+      input: {
+        kind: string;
+      };
+      output: {
+        kind: string;
+        name?: string;
+        description?: string;
+        schema: unknown;
+      };
+    };
+    "configs.remove-value": {
+      input: {
+        kind: string;
+      };
+      output: {
+        success: boolean;
+      };
+    };
   };
-  events: {};
+  events: {
+    "configs.types-updated": {
+      input: {};
+      output: {
+        kinds: string[];
+      };
+    };
+  };
   sources: {};
   entities: {};
 }

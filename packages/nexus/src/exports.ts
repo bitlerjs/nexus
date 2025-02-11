@@ -8,5 +8,7 @@ export * from './specs/specs.js';
 export * from './utils/schema.js';
 export * from './extensions/extensions.extension.js';
 export * from './extensions/extensions.js';
+export * from './events/events.js';
 export * from './events/events.event.js';
+export * from './bootstrap/bootstrap.js';
 export * from '@sinclair/typebox';

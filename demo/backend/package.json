@@ -24,6 +24,9 @@
     "@bitlerjs/nexus-federated": "workspace:*",
     "@bitlerjs/nexus-linear": "workspace:*",
     "@bitlerjs/nexus-homeassistant": "workspace:*",
+    "@bitlerjs/nexus-notes": "workspace:*",
+    "@bitlerjs/nexus-timers": "workspace:*",
+    "@bitlerjs/nexus-calendars": "workspace:*",
     "dotenv": "^16.4.7"
   }
 }

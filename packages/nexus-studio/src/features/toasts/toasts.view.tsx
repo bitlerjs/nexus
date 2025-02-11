@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useToasts } from './toasts.hooks';
+import { useRemoveToast, useToasts } from './toasts.hooks';
 import { Alert } from '@heroui/react';
 
 type ToastType = ReturnType<typeof useToasts>[0]['type'];
@@ -18,6 +18,7 @@ const getColor = (type: ToastType) => {
 };
 const ToastViev = () => {
   const toasts = useToasts();
+  const removeToast = useRemoveToast();
 
   return (
     <div className="fixed right-0 top-0 p-4 flex flex-col gap-4">
@@ -29,7 +30,14 @@ const ToastViev = () => {
             animate={{ opacity: 1, y: 0, height: 'auto', overflow: 'visible' }}
             exit={{ opacity: 0, y: -100, height: 0, overflow: 'hidden' }}
           >
-            <Alert title={toast.title} color={getColor(toast.type)} description={toast.description || '...'} />
+            <Alert
+              onClose={() => removeToast(toast)}
+              onClick={() => removeToast(toast)}
+              title={toast.title}
+              color={getColor(toast.type)}
+              variant="flat"
+              description={toast.description || '...'}
+            />
           </motion.div>
         ))}
       </AnimatePresence>

@@ -24,6 +24,16 @@ const useAddToast = () => {
   );
 };
 
+const useRemoveToast = () => {
+  const { store } = useToastsContext();
+  return useCallback(
+    (toast: Toast) => {
+      store.removeToast(toast);
+    },
+    [store],
+  );
+};
+
 const useToasts = () => {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const { store } = useToastsContext();
@@ -39,4 +49,4 @@ const useToasts = () => {
   return toasts;
 };
 
-export { useAddToast, useToasts };
+export { useAddToast, useToasts, useRemoveToast };

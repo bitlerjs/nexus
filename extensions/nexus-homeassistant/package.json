@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@bitlerjs/nexus": "workspace:*",
+    "@bitlerjs/nexus-configs": "workspace:*",
     "@bitlerjs/nexus-data": "workspace:*",
     "@linear/sdk": "^38.0.0",
     "home-assistant-js-websocket": "^9.4.0"

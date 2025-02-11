@@ -5,6 +5,8 @@ import { openai } from '@bitlerjs/nexus-openai';
 import { typescript } from '@bitlerjs/nexus-typescript';
 import { linear } from '@bitlerjs/nexus-linear';
 import { homeassistant } from '@bitlerjs/nexus-homeassistant';
+import { notes } from '@bitlerjs/nexus-notes';
+import { timers } from '@bitlerjs/nexus-timers';
 
 import { todos } from './src/extension.js';
 
@@ -15,9 +17,7 @@ const config = defineConfig({
     defineExtension(llmExtension, {
       defaultModel: 'openai.gpt-4o-mini',
     }),
-    defineExtension(linear, {
-      apiKey: process.env.LINEAR_API_KEY!,
-    }),
+    defineExtension(linear, {}),
     defineExtension(openai, {
       apiKey: process.env.OPENAI_API_KEY!,
       models: {
@@ -27,10 +27,9 @@ const config = defineConfig({
         'o3-mini': 'o3-mini',
       },
     }),
-    defineExtension(homeassistant, {
-      url: process.env.HOMEASSISTANT_URL!,
-      token: process.env.HOMEASSISTANT_TOKEN!,
-    }),
+    defineExtension(homeassistant, {}),
+    defineExtension(notes, {}),
+    defineExtension(timers, {}),
   ],
 });
 

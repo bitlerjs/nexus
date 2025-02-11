@@ -3,6 +3,8 @@ import { ComponentType, createContext, useContext } from 'react';
 import { Tasks } from '../../pages/tasks/tasks.js';
 import { Task } from '../../pages/task/task.js';
 import { Converstation } from '../../pages/conversation/conversation.js';
+import { Configs } from '../../pages/configs/configs.js';
+import { Config } from '../../pages/config/config.js';
 
 type ScreenDefinition = {
   onRemove?: (id: string) => void | Promise<void>;
@@ -19,6 +21,12 @@ const screens = {
   conversation: {
     component: Converstation,
     onRemove: async (id: string) => { },
+  },
+  configs: {
+    component: Configs,
+  },
+  config: {
+    component: Config,
   },
 } satisfies Record<string, ScreenDefinition>;
 

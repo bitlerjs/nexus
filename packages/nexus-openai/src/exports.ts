@@ -5,6 +5,7 @@ import OpenAI from 'openai';
 type Model = OpenAI.ChatCompletionCreateParams.ChatCompletionCreateParamsNonStreaming['model'];
 
 type Config = {
+  url?: string;
   apiKey: string;
   models: Partial<Record<Model, string>>;
 };
@@ -17,6 +18,7 @@ const openai = createExtension<Config>({
       model: model!,
       api: {
         key: config.apiKey,
+        url: config.url,
       },
       provider: 'OpenAI',
     }));

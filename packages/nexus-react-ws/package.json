@@ -16,6 +16,7 @@
     "@bitlerjs/nexus-client": "workspace:*",
     "@bitlerjs/nexus-config": "workspace:*",
     "@bitlerjs/nexus-llm": "workspace:*",
+    "@bitlerjs/nexus-configs": "workspace:*",
     "@types/react": "^18.3.18",
     "react": "^18.3.1",
     "tsx": "^4.19.2",

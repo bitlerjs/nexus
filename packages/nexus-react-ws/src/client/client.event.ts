@@ -2,6 +2,7 @@ import { type ServerDefinition } from '@bitlerjs/nexus-client-ws';
 import { useEffect } from 'react';
 
 import { useNexus } from '../provider/provider.js';
+import { useHasEvent } from '../events/events.js';
 
 type UseEventEffectOptions<T extends ServerDefinition, TKey extends keyof T['events']> = {
   kind: TKey;
@@ -15,9 +16,10 @@ const useEventEffect = <T extends ServerDefinition, TKey extends keyof T['events
 ) => {
   const { kind, input, handler } = options;
   const { client } = useNexus();
+  const hasEvent = useHasEvent(kind as string);
 
   useEffect(() => {
-    if (!client) {
+    if (!client || !hasEvent) {
       return;
     }
     const promise = client.events.subscribe(kind as string, input, handler);
@@ -26,7 +28,7 @@ const useEventEffect = <T extends ServerDefinition, TKey extends keyof T['events
         subscription.unsubscribe();
       });
     };
-  }, [kind, client, ...deps]);
+  }, [kind, client, hasEvent, ...deps]);
 };
 
 const createEventHooks = <T extends ServerDefinition>() => {

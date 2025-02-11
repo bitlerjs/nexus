@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 import { createTask } from '@bitlerjs/nexus/dist/tasks/tasks.task.js';
-import { Type } from '@bitlerjs/nexus';
+import { Bootstrap, TasksService, Type } from '@bitlerjs/nexus';
 
 import { completionInputSchema } from '../schemas/schemas.completion.js';
 import { getDialog, getTaskTools } from '../utils/completions.js';
@@ -27,7 +27,20 @@ const completionTask = createTask({
     ),
   }),
   handler: async ({ container, input, requestContext, continuation }) => {
-    const dialog = getDialog(input, continuation);
+    const tasksService = container.get(TasksService);
+    const bootstrap = new Bootstrap({
+      container,
+    });
+    await Promise.all(
+      input.tasks?.map(async (kind) => {
+        const task = tasksService.get(kind);
+        if (!task) {
+          return [];
+        }
+        await bootstrap.load(task.bootstrap || []);
+      }) || [],
+    );
+    const dialog = getDialog({ input, continuation, bootstrap });
     const toolsUsed = new ToolsUsed();
     const tools = await getTaskTools({
       container,
@@ -50,12 +63,12 @@ const completionTask = createTask({
 
     const responseFormat = input.schema
       ? ({
-          type: 'json_schema',
-          json_schema: {
-            name: 'default_response',
-            schema: input.schema as any,
-          },
-        } as const)
+        type: 'json_schema',
+        json_schema: {
+          name: 'default_response',
+          schema: input.schema as any,
+        },
+      } as const)
       : undefined;
 
     const getResponse = async () => {
