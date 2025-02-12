@@ -71,6 +71,7 @@ jobs:
           retention-days: 5
           path: |
             packages/*/dist 
+            packages/nexus-studio/public
             extensions/*/dist 
             demo/*/dist 
             package.json
