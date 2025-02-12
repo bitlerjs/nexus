@@ -11,6 +11,12 @@ const configUpdatedEvent = createEvent({
     kind: Type.String(),
     value: Type.Unknown(),
   }),
+  filter: async ({ input, event }) => {
+    if (input.kinds && !input.kinds.includes(event.kind)) {
+      return false;
+    }
+    return true;
+  },
 });
 
 export { configUpdatedEvent };

@@ -17,6 +17,7 @@
   "dependencies": {
     "@bitlerjs/nexus": "workspace:*",
     "@bitlerjs/nexus-llm": "workspace:*",
+    "@bitlerjs/nexus-configs": "workspace:*",
     "openai": "^4.82.0"
   }
 }

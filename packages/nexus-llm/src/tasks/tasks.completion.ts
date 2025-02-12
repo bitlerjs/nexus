@@ -79,7 +79,7 @@ const completionTask = createTask({
           temperature: input.temperature,
           tools,
           response_format: responseFormat,
-          model: model.name,
+          model: model.model,
         });
         const finalContent = await runner.finalContent();
         if (!finalContent) {
@@ -93,7 +93,7 @@ const completionTask = createTask({
           max_tokens: input.maxTokens,
           temperature: input.temperature,
           response_format: responseFormat,
-          model: model.name,
+          model: model.model,
         });
 
         const result = completion.choices[0]?.message?.content;

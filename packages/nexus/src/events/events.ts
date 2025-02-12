@@ -13,11 +13,17 @@ type SubscribeOptions<TInputSchema extends TSchema, TOutputSchema extends TSchem
 
 class EventsService {
   #events: Map<string, Event>;
-  #listeners: Map<string, ((payload: any) => void)[]>;
+  #listeners: Record<
+    string,
+    {
+      handler: (payload: any) => void;
+      input: unknown;
+    }[]
+  >;
 
   constructor() {
     this.#events = new Map();
-    this.#listeners = new Map();
+    this.#listeners = {};
   }
 
   public register = (events: Event<any, any>[]) => {
@@ -39,28 +45,41 @@ class EventsService {
     payload: Static<TOutputSchema>,
   ) => {
     const parsedEvent = parseWithSchema(event.output, payload);
-    const listeners = this.#listeners.get(event.kind);
+    const listeners = this.#listeners[event.kind];
     if (!listeners) {
       return;
     }
-    listeners.forEach((listener) => listener(parsedEvent));
+    Promise.all(
+      (listeners || []).map(async ({ handler, input }) => {
+        if (event.filter && !(await event.filter({ input, event: parsedEvent }))) {
+          return;
+        }
+        handler(parsedEvent);
+      }),
+    );
   };
 
   public subscribe = <TInputSchema extends TSchema, TOutputSchema extends TSchema>({
     event,
+    input,
     handler,
     abortSignal,
   }: SubscribeOptions<TInputSchema, TOutputSchema>) => {
     const reref = (input: Static<TInputSchema>) => handler(input);
-    const listeners = this.#listeners.get(event.name) || [];
-    listeners.push(reref);
-    this.#listeners.set(event.kind, listeners);
+    if (!this.#listeners[event.kind]) {
+      this.#listeners[event.kind] = [];
+    }
+    const listeners = this.#listeners[event.kind];
+    listeners.push({
+      handler: reref,
+      input,
+    });
     const unsubscribe = () => {
-      const listeners = this.#listeners.get(event.kind);
+      const listeners = this.#listeners[event.kind];
       if (!listeners) {
         return;
       }
-      const index = listeners.indexOf(reref);
+      const index = listeners.findIndex((listener) => listener.handler === reref);
       if (index !== -1) {
         listeners.splice(index, 1);
       }

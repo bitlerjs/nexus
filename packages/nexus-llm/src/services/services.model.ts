@@ -25,6 +25,14 @@ class ModelsService {
     this.#defaultModel = model;
   }
 
+  public removeProvider = (provider: string) => {
+    this.#models = new Map(
+      Array.from(this.#models.values())
+        .filter((m) => m.provider !== provider)
+        .map((m) => [m.kind, m]),
+    );
+  };
+
   public register = (model: ModelDefinition[]) => {
     model.forEach((m) => {
       this.#models.set(m.kind, m);

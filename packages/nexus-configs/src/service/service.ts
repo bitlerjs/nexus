@@ -104,20 +104,20 @@ class ConfigService {
     return this.#data.get(config.kind) as Static<T> | undefined;
   };
 
-  public use = async <T extends TSchema>(options: UseOptions<T>) => {
+  public use = async <T extends TSchema>({ config, handler, signal }: UseOptions<T>) => {
     const eventsService = this.#container.get(EventsService);
     eventsService.subscribe({
       event: configUpdatedEvent,
       input: {
-        kinds: [options.config.kind],
+        kinds: [config.kind],
       },
       handler: async ({ value }) => {
-        await options.handler(value as T);
+        await handler(value as T);
       },
-      abortSignal: options.signal,
+      abortSignal: signal,
     });
-    const value = await this.getValue(options.config);
-    await options.handler(value);
+    const value = await this.getValue(config);
+    await handler(value);
   };
 }
 

@@ -1,6 +1,6 @@
 import { createTask, Type } from '@bitlerjs/nexus';
 
-import { ConfigService } from '../exports.js';
+import { ConfigService } from '../service/service.js';
 
 const getConfigValueTask = createTask({
   kind: 'configs.get-value',

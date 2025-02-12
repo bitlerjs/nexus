@@ -19,13 +19,16 @@ const config = defineConfig({
     }),
     defineExtension(linear, {}),
     defineExtension(openai, {
-      apiKey: process.env.OPENAI_API_KEY!,
+      kind: 'openai',
       models: {
         'gpt-4o-mini': 'GPT-4o-Mini',
         'gpt-4': 'GPT-4',
         'o1-mini': 'o1-mini',
         'o3-mini': 'o3-mini',
       },
+    }),
+    defineExtension(openai, {
+      kind: 'ollama',
     }),
     defineExtension(homeassistant, {}),
     defineExtension(notes, {}),
