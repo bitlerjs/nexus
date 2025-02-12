@@ -1,6 +1,5 @@
 {
   "name": "@bitlerjs/nexus-studio",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "main": "dist/exports.js",
