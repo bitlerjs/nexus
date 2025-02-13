@@ -11,6 +11,12 @@ import { timers } from '@bitlerjs/nexus-timers';
 import { todos } from './src/extension.js';
 
 const config = defineConfig({
+  oidc: process.env.OIDC_ISSUER_URL
+    ? {
+        issuerUrl: process.env.OIDC_ISSUER_URL,
+        clientId: process.env.OIDC_CLIENT_ID,
+      }
+    : undefined,
   extensions: [
     defineExtension(todos, {}),
     defineExtension(typescript, {}),

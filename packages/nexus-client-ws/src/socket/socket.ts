@@ -3,7 +3,7 @@ import { createRequest, type RequestPayload, RequestResponse, type RequestType }
 
 type SocketOptions = {
   url: string;
-  token: string;
+  headers?: Record<string, string>;
 };
 
 type SocketEvents = {
@@ -12,6 +12,8 @@ type SocketEvents = {
   message: (data: any) => void;
   close: () => void;
 };
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 class Socket extends EventEmitter<SocketEvents> {
   #options: SocketOptions;
@@ -39,14 +41,12 @@ class Socket extends EventEmitter<SocketEvents> {
         }
       };
       socket.addEventListener('message', authListener);
-      socket.addEventListener('open', async () => {
-        socket.send(JSON.stringify({ type: 'authenticate', payload: { token: this.#options.token } }));
-      });
 
-      socket.addEventListener('close', () => {
+      socket.addEventListener('close', async () => {
         this.#socket = undefined;
         this.emit('close');
         if (!this.#closed) {
+          await sleep(3000);
           resolve(this.#setup());
         }
       });
@@ -57,6 +57,10 @@ class Socket extends EventEmitter<SocketEvents> {
 
       socket.addEventListener('message', ({ data }) => {
         this.emit('message', JSON.parse(data));
+      });
+
+      socket.addEventListener('open', async () => {
+        socket.send(JSON.stringify({ type: 'authenticate', payload: { headers: this.#options.headers || {} } }));
       });
     });
 

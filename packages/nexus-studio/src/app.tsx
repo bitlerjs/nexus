@@ -1,26 +1,19 @@
 import { Divider, HeroUIProvider } from '@heroui/react';
 import { Sidebar } from './containers/sidebar/sidebar.js';
-import { NexusProvider, useCreateNexus } from '@bitlerjs/nexus-react-ws';
 import { ScreensContainer, ScreensProvider } from './features/screens/screens.js';
 import { ActionsProvider } from './features/actions/actions.js';
 import { ThemeProvider } from 'next-themes';
 import { ToastsProvider } from './features/toasts/toasts.provider.js';
+import { NexusProvider } from '@bitlerjs/nexus-react-ws';
+import { Server } from './features/server/server.js';
 
 const App = () => {
-  const client = useCreateNexus({
-    getSession: async () => {
-      return { url: 'http://localhost:4000', token: '' };
-    },
-    setSession: async (session) => {
-      console.log('setSession', session);
-    },
-  });
   return (
     <HeroUIProvider>
       <ThemeProvider attribute="class" defaultTheme="light">
         <ToastsProvider>
-          <NexusProvider {...client}>
-            {client.state === 'logged-in' && (
+          <Server>
+            <NexusProvider>
               <ScreensProvider>
                 <ActionsProvider>
                   <div className="h-screen w-screen flex bg-default-50">
@@ -34,8 +27,8 @@ const App = () => {
                   </div>
                 </ActionsProvider>
               </ScreensProvider>
-            )}
-          </NexusProvider>
+            </NexusProvider>
+          </Server>
         </ToastsProvider>
       </ThemeProvider>
     </HeroUIProvider>

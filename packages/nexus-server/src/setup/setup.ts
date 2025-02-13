@@ -8,6 +8,11 @@ type Setup = {
   host?: string;
   container?: Container;
   tasks?: Task[];
+  oidc?: {
+    issuerUrl: string;
+    clientId?: string;
+    audience?: string;
+  };
   extensions?: [Extension<any>, unknown][];
   onServerSetup?: (app: FastifyInstance) => Promise<void>;
   onReady?: (container: Container) => Promise<void> | void;
@@ -29,6 +34,7 @@ const setup = async (options: Setup) => {
   const serverService = container.get(ServerService);
   const server = await serverService.create({
     setup: options.onServerSetup,
+    oidc: options.oidc,
   });
   await server.listen({
     port: options.port || 4000,

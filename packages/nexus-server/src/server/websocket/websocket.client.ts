@@ -3,6 +3,8 @@ import { createResponder, RequestHandler } from '@bitlerjs/nexus-socket';
 import { EventsService } from '@bitlerjs/nexus/dist/events/events.js';
 import { WebSocket } from '@fastify/websocket';
 
+import { JwtValidators } from '../oidc/oidc.js';
+
 type WebSocketClientOptions = {
   socket: WebSocket;
   container: Container;
@@ -12,13 +14,17 @@ type WebSocketClientOptions = {
 type SetupWebSocketClient = {
   socket: WebSocket;
   container: Container;
+  oidc?: {
+    issuerUrl: string;
+    audience?: string;
+  };
 };
 
 type Authenticate = {
   type: 'authenticate';
   id?: string;
   payload: {
-    token: string;
+    headers: Record<string, string>;
   };
 };
 
@@ -160,11 +166,26 @@ class WebSocketClient {
       };
       const authHandler = async (message: MessageEvent) => {
         try {
-          const { type } = JSON.parse(message.data) as Authenticate;
+          const { type, payload } = JSON.parse(message.data) as Authenticate;
           if (type !== 'authenticate') {
             throw new Error('Invalid message');
           }
           const requestContext = new RequestContext();
+          if (options.oidc) {
+            const authorization = payload.headers.Authorization;
+            if (!authorization) {
+              throw new Error('Authorization header is required');
+            }
+
+            const [type, token] = authorization.split(' ');
+            if (type !== 'Bearer') {
+              throw new Error('Authorization type must be Bearer');
+            }
+            const { issuerUrl, audience } = options.oidc;
+            const validators = options.container.get(JwtValidators);
+            const validator = validators.get(issuerUrl);
+            await validator.validateToken(token, audience);
+          }
           resolve(
             new WebSocketClient({
               container: options.container,
@@ -175,6 +196,7 @@ class WebSocketClient {
           options.socket.send(JSON.stringify({ type: 'authenticated' }));
         } catch (error) {
           reject(error);
+          console.error(error instanceof Error ? error.message : error);
           options.socket.send(JSON.stringify({ type: 'error', payload: 'Invalid message' }));
         } finally {
           clearTimeout(timeout);

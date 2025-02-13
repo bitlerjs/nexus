@@ -1,73 +1,48 @@
 import { Client, type ServerDefinition } from '@bitlerjs/nexus-client-ws';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { TasksProvider } from '../exports.js';
+import { TasksProvider } from '../tasks/tasks.js';
 import { EventsProvider } from '../events/events.js';
-
-type LoginOptions = {
-  url: string;
-  token: string;
-};
+import { useLogin } from '../login/login.js';
 
 type LoginState = 'pending' | 'not-logged-in' | 'logging-in' | 'logged-in';
 
-type NexusOptions = {
-  getSession?: () => Promise<LoginOptions | undefined>;
-  setSession?: (session?: LoginOptions) => Promise<void>;
-};
-
-const useCreateNexus = <T extends ServerDefinition = ServerDefinition>({ getSession, setSession }: NexusOptions) => {
+const useCreateNexus = <T extends ServerDefinition = ServerDefinition>() => {
+  const { url, accessToken } = useLogin();
   const [state, setState] = useState<LoginState>('pending');
   const [client, setClient] = useState<Client<T>>();
   const [error, setError] = useState<unknown>();
   const queryClient = useMemo(() => new QueryClient(), [client]);
 
-  const login = useCallback(async (options: LoginOptions) => {
+  const retry = useCallback(async () => {
     setState('logging-in');
-    setError(undefined);
     try {
+      setError(undefined);
       const nextClient = new Client<T>({
-        url: options.url,
-        token: options.token,
+        url,
+        headers: accessToken
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+            }
+          : {},
       });
+      await nextClient.ready();
       setClient(nextClient);
-      await setSession?.(options);
       setState('logged-in');
     } catch (err) {
       setError(err);
       setState('not-logged-in');
     }
-  }, []);
-
-  const logout = useCallback(() => {
-    setState('not-logged-in');
-    setClient(undefined);
-    setSession?.();
-  }, []);
+  }, [url, accessToken]);
 
   useEffect(() => {
-    const run = async () => {
-      try {
-        setError(undefined);
-        const session = await getSession?.();
-        if (session) {
-          await login(session);
-        } else {
-          setState('not-logged-in');
-        }
-      } catch (err) {
-        setError(err);
-      }
-    };
-    run();
-  }, []);
+    retry();
+  }, [retry]);
 
   return {
     state,
     error,
     client,
-    login,
-    logout,
     queryClient,
   };
 };
@@ -76,11 +51,12 @@ type NexusContextValue<T extends ServerDefinition = ServerDefinition> = ReturnTy
 
 const NexusContext = createContext<NexusContextValue | undefined>(undefined);
 
-type NexusProviderProps = NexusContextValue & {
+type NexusProviderProps = {
   children: ReactNode;
 };
 
-const NexusProvider = ({ children, ...props }: NexusProviderProps) => {
+const NexusProvider = ({ children }: NexusProviderProps) => {
+  const props = useCreateNexus();
   return (
     <QueryClientProvider client={props.queryClient}>
       <NexusContext.Provider value={props}>

@@ -1,4 +1,4 @@
-import { Container } from '@bitlerjs/nexus';
+import { Container, Type } from '@bitlerjs/nexus';
 import { Ajv } from 'ajv';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import fastifyCors from '@fastify/cors';
@@ -8,9 +8,15 @@ import fastify from 'fastify';
 
 import { apiPlugin } from './api/api.js';
 import { wsPlugin } from './websocket/websocket.js';
+import { JwtValidators } from './oidc/oidc.js';
 
 type CreateServerOptions = {
   setup?: (app: fastify.FastifyInstance) => Promise<void>;
+  oidc?: {
+    issuerUrl: string;
+    clientId?: string;
+    audience?: string;
+  };
 };
 
 const ajv = new Ajv({
@@ -31,6 +37,7 @@ class ServerService {
   public create = async (options: CreateServerOptions = {}) => {
     const app = fastify().withTypeProvider<TypeBoxTypeProvider>();
     await app.register(fastifySwagger, {});
+    await app.register(fastifyCors);
     await app.register(scalar, {
       routePrefix: '/api/docs',
     });
@@ -38,17 +45,62 @@ class ServerService {
       const validate = ajv.compile(schema);
       return validate;
     });
+    app.addHook('onRequest', async (request) => {
+      request.container = this.#container;
+    });
+
+    await app.register(wsPlugin, {
+      prefix: '/api/ws',
+      oidc: options.oidc,
+    });
+
+    app.route({
+      url: '/api/config',
+      method: 'GET',
+      schema: {
+        response: {
+          200: Type.Object({
+            oidc: Type.Optional(
+              Type.Object({
+                issuerUrl: Type.String(),
+                clientId: Type.Optional(Type.String()),
+              }),
+            ),
+          }),
+        },
+      },
+      handler: async () => {
+        return {
+          oidc: options.oidc && {
+            issuerUrl: options.oidc.issuerUrl,
+            clientId: options.oidc.clientId,
+          },
+        };
+      },
+    });
+
     await app.register(
       async (app) => {
-        await app.register(fastifyCors);
+        if (options.oidc) {
+          const { issuerUrl, audience } = options.oidc;
+          const validators = this.#container.get(JwtValidators);
+          const validator = validators.get(issuerUrl);
 
-        app.addHook('onRequest', async (request) => {
-          request.container = this.#container;
-        });
+          app.addHook('onRequest', async (request) => {
+            const authorization = request.headers.authorization;
+            if (!authorization) {
+              throw new Error('Authorization header is required');
+            }
 
-        await app.register(wsPlugin, {
-          prefix: '/ws',
-        });
+            const [type, token] = authorization.split(' ');
+            if (type !== 'Bearer') {
+              throw new Error('Authorization type must be Bearer');
+            }
+
+            await validator.validateToken(token, audience);
+          });
+        }
+
         await app.register(apiPlugin, {
           container: this.#container,
         });

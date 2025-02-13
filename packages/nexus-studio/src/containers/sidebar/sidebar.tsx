@@ -1,4 +1,4 @@
-import { Button, Divider, Listbox, ListboxItem, ListboxSection } from '@heroui/react';
+import { Button, Listbox, ListboxItem, ListboxSection, Tooltip } from '@heroui/react';
 import {
   Bot,
   BotMessageSquare,
@@ -7,17 +7,19 @@ import {
   Database,
   IdCard,
   LaptopMinimalCheck,
+  LogOut,
   Moon,
   Sun,
   Workflow,
 } from 'lucide-react';
 import { useAddScreen } from '../../features/screens/screens';
 import { useTheme } from 'next-themes';
-import { useHasTask } from '@bitlerjs/nexus-react-ws';
+import { useHasTask, useLogin } from '@bitlerjs/nexus-react-ws';
 import clsx from 'clsx';
 
 const Sidebar = () => {
   const { theme, setTheme } = useTheme();
+  const { onLogout } = useLogin();
   const addScreen = useAddScreen();
   const hasConfigs = useHasTask('configs.list');
   return (
@@ -150,10 +152,17 @@ const Sidebar = () => {
         </Listbox>
         <div className="flex-1" />
         <div className="flex justify-center">
-          <Button isIconOnly variant="light" size="sm" onPress={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-            {theme === 'dark' && <Sun />}
-            {theme !== 'dark' && <Moon />}
-          </Button>
+          <Tooltip content="Toggle theme">
+            <Button isIconOnly variant="light" size="sm" onPress={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+              {theme === 'dark' && <Sun />}
+              {theme !== 'dark' && <Moon />}
+            </Button>
+          </Tooltip>
+          <Tooltip content="Logout">
+            <Button isIconOnly variant="light" size="sm" onPress={() => onLogout?.()}>
+              <LogOut />
+            </Button>
+          </Tooltip>
         </div>
       </div>
     </div>

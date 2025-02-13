@@ -7,7 +7,7 @@ import { Socket } from './socket/socket.js';
 
 type ClientOptions = {
   url: string;
-  token: string;
+  headers?: Record<string, string>;
 };
 
 type ClientEvents = {
@@ -23,7 +23,7 @@ class Client<TSchema extends ServerDefinition = ServerDefinition> extends EventE
 
   constructor(options: ClientOptions) {
     super();
-    this.#socket = new Socket({ url: options.url, token: options.token });
+    this.#socket = new Socket({ url: options.url, headers: options.headers });
     this.#tasks = new Tasks({ socket: this.#socket });
     this.#events = new Events({ socket: this.#socket });
 

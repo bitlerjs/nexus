@@ -1,0 +1,10 @@
+{
+  "extends": "@bitlerjs/nexus-config",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "jsx": "react"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
