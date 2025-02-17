@@ -1,3 +1,5 @@
+import { Static, TSchema } from '@sinclair/typebox';
+
 import { Continuation } from '../continuation/continuation.js';
 import { Container } from '../container/container.js';
 import { RequestContext } from '../request-context/request-context.js';
@@ -8,9 +10,9 @@ import { EventsService } from '../events/events.js';
 import { Task } from './tasks.task.js';
 import { tasksUpdated } from './tasks.events.js';
 
-type RunOptions = {
-  task: Task;
-  input: unknown;
+type RunOptions<TInput extends TSchema> = {
+  task: Task<TInput, any>;
+  input: Static<TInput>;
   requestContext: RequestContext;
   continuation: Continuation;
 };
@@ -39,7 +41,7 @@ class TasksService {
     return this.#tasks.get(kind);
   };
 
-  public run = async (options: RunOptions) => {
+  public run = async <T extends TSchema>(options: RunOptions<T>) => {
     const { task, requestContext, continuation, input } = options;
     const sources = new Sources({
       container: this.#container,

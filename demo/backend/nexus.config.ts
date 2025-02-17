@@ -7,15 +7,17 @@ import { linear } from '@bitlerjs/nexus-linear';
 import { homeassistant } from '@bitlerjs/nexus-homeassistant';
 import { notes } from '@bitlerjs/nexus-notes';
 import { timers } from '@bitlerjs/nexus-timers';
+import { signal } from '@bitlerjs/nexus-signal';
+import { notifications } from '@bitlerjs/nexus-notifications';
 
 import { todos } from './src/extension.js';
 
 const config = defineConfig({
   oidc: process.env.OIDC_ISSUER_URL
     ? {
-        issuerUrl: process.env.OIDC_ISSUER_URL,
-        clientId: process.env.OIDC_CLIENT_ID,
-      }
+      issuerUrl: process.env.OIDC_ISSUER_URL,
+      clientId: process.env.OIDC_CLIENT_ID,
+    }
     : undefined,
   extensions: [
     defineExtension(todos, {}),
@@ -23,6 +25,8 @@ const config = defineConfig({
     defineExtension(llmExtension, {
       defaultModel: 'openai.gpt-4o-mini',
     }),
+    defineExtension(signal, {}),
+    defineExtension(notifications, {}),
     defineExtension(linear, {}),
     defineExtension(openai, {
       kind: 'openai',
