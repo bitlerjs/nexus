@@ -17,10 +17,14 @@ const signal = createExtension({
     configsService.use({
       config: signalConfig,
       handler: async (config) => {
+        const signalService = container.get(SignalService);
         if (config) {
-          const signalService = container.get(SignalService);
+          signalService.config = config;
           await signalService.setup();
           tasksService.register([getContactsTask, getGroupsTask, sendTask]);
+        } else {
+          tasksService.unregister([getContactsTask, getGroupsTask, sendTask]);
+          await signalService.destroy();
         }
       },
     });

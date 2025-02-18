@@ -31,6 +31,16 @@ class TasksService {
     tasks.forEach((task) => {
       this.#tasks.set(task.kind, task);
     });
+    const eventsService = this.#container.get(EventsService);
+    eventsService.emit(tasksUpdated, {});
+  };
+
+  public unregister = (tasks: Task<any, any>[]) => {
+    tasks.forEach((task) => {
+      this.#tasks.delete(task.kind);
+    });
+    const eventsService = this.#container.get(EventsService);
+    eventsService.emit(tasksUpdated, {});
   };
 
   public list = () => {

@@ -24,6 +24,9 @@ const homeassistant = createExtension<Config>({
           if (config) {
             ha.setAuth(config.url, config.token);
             tasksService.register([...Object.values(tasks.lights), ...Object.values(tasks.config)]);
+          } else {
+            ha.deauth();
+            tasksService.unregister([...Object.values(tasks.lights), ...Object.values(tasks.config)]);
           }
         },
       });

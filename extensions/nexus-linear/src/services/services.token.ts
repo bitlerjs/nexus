@@ -4,7 +4,7 @@ class LinearService {
   #token?: string;
   #client?: LinearClient;
 
-  public set token(token: string) {
+  public set token(token: string | undefined) {
     this.#client = undefined;
     this.#token = token;
   }

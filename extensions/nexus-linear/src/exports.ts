@@ -32,6 +32,9 @@ const linear = createExtension<Config>({
             linearService.token = config.apiKey;
             tasksService.register([assignedIssuesTask, getBySprintTask, whoAmITask]);
             entityProviderService.register([linearIssueEntity]);
+          } else {
+            linearService.token = undefined;
+            tasksService.unregister([assignedIssuesTask, getBySprintTask, whoAmITask]);
           }
         },
       });

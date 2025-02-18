@@ -90,6 +90,12 @@ class HomeassistantService {
     this.#connectionPromise = undefined;
   };
 
+  public deauth = () => {
+    this.#auth = undefined;
+    this.#connectionPromise?.then((connection) => connection.close());
+    this.#connectionPromise = undefined;
+  };
+
   public getRoomsConfig = async () => {
     if (!this.#roomsConfigPromise) {
       this.#roomsConfigPromise = this.#getRoomsConfig();

@@ -12,11 +12,12 @@ const calendars = createExtension({
     configsService.use({
       config: calendarConfig,
       handler: async (config) => {
-        if (!config) {
-          return;
-        }
         const tasksService = container.get(TasksService);
-        tasksService.register([findEventsTask]);
+        if (config) {
+          tasksService.register([findEventsTask]);
+        } else {
+          tasksService.unregister([findEventsTask]);
+        }
       },
     });
   },

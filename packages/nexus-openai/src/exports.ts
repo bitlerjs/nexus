@@ -9,17 +9,17 @@ type Model = OpenAI.ChatCompletionCreateParams.ChatCompletionCreateParamsNonStre
 
 type Config =
   | {
-    kind: string;
-    models?: Partial<Record<Model, string>>;
-  }
+      kind: string;
+      models?: Partial<Record<Model, string>>;
+    }
   | {
-    kind: string;
-    api: {
-      url?: string;
-      key: string;
+      kind: string;
+      api: {
+        url?: string;
+        key: string;
+      };
+      models: Partial<Record<Model, string>>;
     };
-    models: Partial<Record<Model, string>>;
-  };
 const openai = createExtension<Config>({
   setup: async ({ config, container }) => {
     const modelsService = container.get(ModelsService);

@@ -25,9 +25,13 @@ const setup = async (options: Setup) => {
     tasksService.register(options.tasks);
   }
   if (options.extensions) {
-    const extensionsService = container.get(ExtensionsService);
-    for (const [extension, config] of options.extensions) {
-      await extensionsService.register(extension, config);
+    try {
+      const extensionsService = container.get(ExtensionsService);
+      for (const [extension, config] of options.extensions) {
+        await extensionsService.register(extension, config);
+      }
+    } catch (e) {
+      console.error(e);
     }
   }
   await options.onReady?.(container);
