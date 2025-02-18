@@ -3,19 +3,19 @@
  * Do not make direct changes to the file.
  */
 
-export type paths = {
-  '/v1/about': {
+export interface paths {
+  "/v1/about": {
     /** Returns the supported API versions and the internal build nr */
     get: {
       responses: {
         /** OK */
         200: {
-          schema: definitions['client.About'];
+          schema: definitions["client.About"];
         };
       };
     };
   };
-  '/v1/accounts': {
+  "/v1/accounts": {
     /** Lists all of the accounts linked or registered */
     get: {
       responses: {
@@ -25,12 +25,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/accounts/{number}/rate-limit-challenge': {
+  "/v1/accounts/{number}/rate-limit-challenge": {
     /** When running into rate limits, sometimes the limit can be lifted, by solving a CAPTCHA. To get the captcha token, go to https://signalcaptchas.org/challenge/generate.html For the staging environment, use: https://signalcaptchas.org/staging/registration/generate.html. The "challenge_token" is the token from the failed send attempt. The "captcha" is the captcha result, starting with signalcaptcha:// */
     post: {
       parameters: {
@@ -40,7 +40,7 @@ export type paths = {
         };
         body: {
           /** Request */
-          data: definitions['api.RateLimitChallengeRequest'];
+          data: definitions["api.RateLimitChallengeRequest"];
         };
       };
       responses: {
@@ -48,12 +48,12 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/accounts/{number}/settings': {
+  "/v1/accounts/{number}/settings": {
     /** Update the account attributes on the signal server. */
     put: {
       parameters: {
@@ -63,7 +63,7 @@ export type paths = {
         };
         body: {
           /** Request */
-          data: definitions['api.UpdateAccountSettingsRequest'];
+          data: definitions["api.UpdateAccountSettingsRequest"];
         };
       };
       responses: {
@@ -71,12 +71,12 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/accounts/{number}/username': {
+  "/v1/accounts/{number}/username": {
     /** Allows to set the username that should be used for this account. This can either be just the nickname (e.g. test) or the complete username with discriminator (e.g. test.123). Returns the new username with discriminator and the username link. */
     post: {
       parameters: {
@@ -86,19 +86,19 @@ export type paths = {
         };
         body: {
           /** Request */
-          data: definitions['api.SetUsernameRequest'];
+          data: definitions["api.SetUsernameRequest"];
         };
       };
       responses: {
         /** Created */
         201: {
-          schema: definitions['client.SetUsernameResponse'];
+          schema: definitions["client.SetUsernameResponse"];
         };
         /** No Content */
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -115,12 +115,12 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/attachments': {
+  "/v1/attachments": {
     /** List all downloaded attachments */
     get: {
       responses: {
@@ -130,12 +130,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/attachments/{attachment}': {
+  "/v1/attachments/{attachment}": {
     /** Serve the attachment with the given id */
     get: {
       parameters: {
@@ -151,7 +151,7 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -170,22 +170,22 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/configuration': {
+  "/v1/configuration": {
     /** List the REST API configuration. */
     get: {
       responses: {
         /** OK */
         200: {
-          schema: definitions['api.Configuration'];
+          schema: definitions["api.Configuration"];
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -194,7 +194,7 @@ export type paths = {
       parameters: {
         body: {
           /** Configuration */
-          data: definitions['api.Configuration'];
+          data: definitions["api.Configuration"];
         };
       };
       responses: {
@@ -204,12 +204,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/configuration/{number}/settings': {
+  "/v1/configuration/{number}/settings": {
     /** List account specific settings. */
     get: {
       parameters: {
@@ -219,7 +219,7 @@ export type paths = {
         };
         body: {
           /** Request */
-          data: definitions['api.TrustModeResponse'];
+          data: definitions["api.TrustModeResponse"];
         };
       };
       responses: {
@@ -227,7 +227,7 @@ export type paths = {
         200: unknown;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -240,7 +240,7 @@ export type paths = {
         };
         body: {
           /** Request */
-          data: definitions['api.TrustModeRequest'];
+          data: definitions["api.TrustModeRequest"];
         };
       };
       responses: {
@@ -248,12 +248,12 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/contacts/{number}': {
+  "/v1/contacts/{number}": {
     /** List all contacts for the given number. */
     get: {
       parameters: {
@@ -265,7 +265,7 @@ export type paths = {
       responses: {
         /** OK */
         200: {
-          schema: definitions['client.ListContactsResponse'][];
+          schema: definitions["client.ListContactsResponse"][];
         };
       };
     };
@@ -278,7 +278,7 @@ export type paths = {
         };
         body: {
           /** Contact */
-          data: definitions['api.UpdateContactRequest'];
+          data: definitions["api.UpdateContactRequest"];
         };
       };
       responses: {
@@ -286,12 +286,12 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/contacts/{number}/sync': {
+  "/v1/contacts/{number}/sync": {
     /** Send a synchronization message with the local contacts list to all linked devices. This command should only be used if this is the primary device. */
     post: {
       parameters: {
@@ -305,12 +305,12 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/devices/{number}': {
+  "/v1/devices/{number}": {
     /** Links another device to this device. Only works, if this is the master device. */
     post: {
       parameters: {
@@ -320,7 +320,7 @@ export type paths = {
         };
         body: {
           /** Request */
-          data: definitions['api.AddDeviceRequest'];
+          data: definitions["api.AddDeviceRequest"];
         };
       };
       responses: {
@@ -328,12 +328,12 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/groups/{number}': {
+  "/v1/groups/{number}": {
     /** List all Signal Groups. */
     get: {
       parameters: {
@@ -345,11 +345,11 @@ export type paths = {
       responses: {
         /** OK */
         200: {
-          schema: definitions['client.GroupEntry'][];
+          schema: definitions["client.GroupEntry"][];
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -358,7 +358,7 @@ export type paths = {
       parameters: {
         body: {
           /** Input Data */
-          data: definitions['api.CreateGroupRequest'];
+          data: definitions["api.CreateGroupRequest"];
         };
         path: {
           /** Registered Phone Number */
@@ -368,16 +368,16 @@ export type paths = {
       responses: {
         /** Created */
         201: {
-          schema: definitions['api.CreateGroupResponse'];
+          schema: definitions["api.CreateGroupResponse"];
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/groups/{number}/{groupid}': {
+  "/v1/groups/{number}/{groupid}": {
     /** List a specific Signal Group. */
     get: {
       parameters: {
@@ -391,11 +391,11 @@ export type paths = {
       responses: {
         /** OK */
         200: {
-          schema: definitions['client.GroupEntry'];
+          schema: definitions["client.GroupEntry"];
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -410,7 +410,7 @@ export type paths = {
         };
         body: {
           /** Input Data */
-          data: definitions['api.UpdateGroupRequest'];
+          data: definitions["api.UpdateGroupRequest"];
         };
       };
       responses: {
@@ -420,7 +420,7 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -441,18 +441,18 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/groups/{number}/{groupid}/admins': {
+  "/v1/groups/{number}/{groupid}/admins": {
     /** Add one or more admins to an existing Signal Group. */
     post: {
       parameters: {
         body: {
           /** Admins */
-          data: definitions['api.ChangeGroupAdminsRequest'];
+          data: definitions["api.ChangeGroupAdminsRequest"];
         };
         path: {
           /** Registered Phone Number */
@@ -468,7 +468,7 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -477,7 +477,7 @@ export type paths = {
       parameters: {
         body: {
           /** Admins */
-          data: definitions['api.ChangeGroupAdminsRequest'];
+          data: definitions["api.ChangeGroupAdminsRequest"];
         };
         path: {
           /** Registered Phone Number */
@@ -493,12 +493,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/groups/{number}/{groupid}/block': {
+  "/v1/groups/{number}/{groupid}/block": {
     /** Block the specified Signal Group. */
     post: {
       parameters: {
@@ -516,12 +516,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/groups/{number}/{groupid}/join': {
+  "/v1/groups/{number}/{groupid}/join": {
     /** Join the specified Signal Group. */
     post: {
       parameters: {
@@ -539,18 +539,18 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/groups/{number}/{groupid}/members': {
+  "/v1/groups/{number}/{groupid}/members": {
     /** Add one or more members to an existing Signal Group. */
     post: {
       parameters: {
         body: {
           /** Members */
-          data: definitions['api.ChangeGroupMembersRequest'];
+          data: definitions["api.ChangeGroupMembersRequest"];
         };
         path: {
           /** Registered Phone Number */
@@ -566,7 +566,7 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -575,7 +575,7 @@ export type paths = {
       parameters: {
         body: {
           /** Members */
-          data: definitions['api.ChangeGroupMembersRequest'];
+          data: definitions["api.ChangeGroupMembersRequest"];
         };
         path: {
           /** Registered Phone Number */
@@ -591,12 +591,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/groups/{number}/{groupid}/quit': {
+  "/v1/groups/{number}/{groupid}/quit": {
     /** Quit the specified Signal Group. */
     post: {
       parameters: {
@@ -614,12 +614,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/health': {
+  "/v1/health": {
     /** Internally used by the docker container to perform the health check. */
     get: {
       responses: {
@@ -630,7 +630,7 @@ export type paths = {
       };
     };
   };
-  '/v1/identities/{number}': {
+  "/v1/identities/{number}": {
     /** List all identities for the given number. */
     get: {
       parameters: {
@@ -642,18 +642,18 @@ export type paths = {
       responses: {
         /** OK */
         200: {
-          schema: definitions['client.IdentityEntry'][];
+          schema: definitions["client.IdentityEntry"][];
         };
       };
     };
   };
-  '/v1/identities/{number}/trust/{numberToTrust}': {
+  "/v1/identities/{number}/trust/{numberToTrust}": {
     /** Trust an identity. When 'trust_all_known_keys' is set to' true', all known keys of this user are trusted. **This is only recommended for testing.** */
     put: {
       parameters: {
         body: {
           /** Input Data */
-          data: definitions['api.TrustIdentityRequest'];
+          data: definitions["api.TrustIdentityRequest"];
         };
         path: {
           /** Registered Phone Number */
@@ -670,13 +670,13 @@ export type paths = {
       };
     };
   };
-  '/v1/profiles/{number}': {
+  "/v1/profiles/{number}": {
     /** Set your name and optional an avatar. */
     put: {
       parameters: {
         body: {
           /** Profile Data */
-          data: definitions['api.UpdateProfileRequest'];
+          data: definitions["api.UpdateProfileRequest"];
         };
         path: {
           /** Registered Phone Number */
@@ -690,12 +690,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/qrcodelink': {
+  "/v1/qrcodelink": {
     /** Link device and generate QR code */
     get: {
       parameters: {
@@ -713,18 +713,18 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/reactions/{number}': {
+  "/v1/reactions/{number}": {
     /** React to a message */
     post: {
       parameters: {
         body: {
           /** Reaction */
-          data: definitions['api.Reaction'];
+          data: definitions["api.Reaction"];
         };
         path: {
           /** Registered phone number */
@@ -738,7 +738,7 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -747,7 +747,7 @@ export type paths = {
       parameters: {
         body: {
           /** Reaction */
-          data: definitions['api.Reaction'];
+          data: definitions["api.Reaction"];
         };
         path: {
           /** Registered phone number */
@@ -761,18 +761,18 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/receipts/{number}': {
+  "/v1/receipts/{number}": {
     /** Send a read or viewed receipt */
     post: {
       parameters: {
         body: {
           /** Receipt */
-          data: definitions['api.Receipt'];
+          data: definitions["api.Receipt"];
         };
         path: {
           /** Registered phone number */
@@ -786,12 +786,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/receive/{number}': {
+  "/v1/receive/{number}": {
     /** Receives Signal Messages from the Signal Network. If you are running the docker container in normal/native mode, this is a GET endpoint. In json-rpc mode this is a websocket endpoint. */
     get: {
       parameters: {
@@ -819,12 +819,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/register/{number}': {
+  "/v1/register/{number}": {
     /** Register a phone number with the signal network. */
     post: {
       parameters: {
@@ -834,7 +834,7 @@ export type paths = {
         };
         body: {
           /** Additional Settings */
-          data?: definitions['api.RegisterNumberRequest'];
+          data?: definitions["api.RegisterNumberRequest"];
         };
       };
       responses: {
@@ -842,12 +842,12 @@ export type paths = {
         201: unknown;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/register/{number}/verify/{token}': {
+  "/v1/register/{number}/verify/{token}": {
     /** Verify a registered phone number with the signal network. */
     post: {
       parameters: {
@@ -859,7 +859,7 @@ export type paths = {
         };
         body: {
           /** Additional Settings */
-          data?: definitions['api.VerifyNumberSettings'];
+          data?: definitions["api.VerifyNumberSettings"];
         };
       };
       responses: {
@@ -869,12 +869,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/search/{number}': {
+  "/v1/search/{number}": {
     /** Check if one or more phone numbers are registered with the Signal Service. */
     get: {
       parameters: {
@@ -890,22 +890,22 @@ export type paths = {
       responses: {
         /** OK */
         200: {
-          schema: definitions['api.SearchResponse'][];
+          schema: definitions["api.SearchResponse"][];
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/send': {
+  "/v1/send": {
     /** Send a signal message */
     post: {
       parameters: {
         body: {
           /** Input Data */
-          data: definitions['api.SendMessageV1'];
+          data: definitions["api.SendMessageV1"];
         };
       };
       responses: {
@@ -915,12 +915,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/sticker-packs/{number}': {
+  "/v1/sticker-packs/{number}": {
     /** List Installed Sticker Packs. */
     get: {
       parameters: {
@@ -932,13 +932,13 @@ export type paths = {
       responses: {
         /** OK */
         200: {
-          schema: definitions['client.ListInstalledStickerPacksResponse'][];
+          schema: definitions["client.ListInstalledStickerPacksResponse"][];
         };
         /** No Content */
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -951,7 +951,7 @@ export type paths = {
         };
         body: {
           /** Request */
-          data: definitions['api.AddStickerPackRequest'];
+          data: definitions["api.AddStickerPackRequest"];
         };
       };
       responses: {
@@ -959,12 +959,12 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/typing-indicator/{number}': {
+  "/v1/typing-indicator/{number}": {
     /** Show Typing Indicator. */
     put: {
       parameters: {
@@ -974,7 +974,7 @@ export type paths = {
         };
         body: {
           /** Type */
-          data: definitions['api.TypingIndicatorRequest'];
+          data: definitions["api.TypingIndicatorRequest"];
         };
       };
       responses: {
@@ -984,7 +984,7 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
@@ -997,7 +997,7 @@ export type paths = {
         };
         body: {
           /** Type */
-          data: definitions['api.TypingIndicatorRequest'];
+          data: definitions["api.TypingIndicatorRequest"];
         };
       };
       responses: {
@@ -1007,12 +1007,12 @@ export type paths = {
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v1/unregister/{number}': {
+  "/v1/unregister/{number}": {
     /** Disables push support for this device. **WARNING:** If *delete_account* is set to *true*, the account will be deleted from the Signal Server. This cannot be undone without loss. */
     post: {
       parameters: {
@@ -1022,7 +1022,7 @@ export type paths = {
         };
         body: {
           /** Additional Settings */
-          data?: definitions['api.UnregisterNumberRequest'];
+          data?: definitions["api.UnregisterNumberRequest"];
         };
       };
       responses: {
@@ -1030,112 +1030,112 @@ export type paths = {
         204: never;
         /** Bad Request */
         400: {
-          schema: definitions['api.Error'];
+          schema: definitions["api.Error"];
         };
       };
     };
   };
-  '/v2/send': {
-    /** Send a signal message. Set the text_mode to 'styled' in case you want to add formatting to your text message. Styling Options: *italic text*, **bold text**, ~strikethrough text~. If you want to escape a formatting character, prefix it with two backslashes ('\\') */
+  "/v2/send": {
+    /** Send a signal message. Set the text_mode to 'styled' in case you want to add formatting to your text message. Styling Options: \*italic text\*, \*\*bold text\*\*, ~strikethrough text~, ||spoiler||, \`monospace\`. If you want to escape a formatting character, prefix it with two backslashes. */
     post: {
       parameters: {
         body: {
           /** Input Data */
-          data: definitions['api.SendMessageV2'];
+          data: definitions["api.SendMessageV2"];
         };
       };
       responses: {
         /** Created */
         201: {
-          schema: definitions['api.SendMessageResponse'];
+          schema: definitions["api.SendMessageResponse"];
         };
         /** Bad Request */
         400: {
-          schema: definitions['api.SendMessageError'];
+          schema: definitions["api.SendMessageError"];
         };
       };
     };
   };
-};
+}
 
-export type definitions = {
-  'api.AddDeviceRequest': {
+export interface definitions {
+  "api.AddDeviceRequest": {
     uri?: string;
   };
-  'api.AddStickerPackRequest': {
+  "api.AddStickerPackRequest": {
     /** @example 9a32eda01a7a28574f2eb48668ae0dc4 */
     pack_id?: string;
     /** @example 19546e18eba0ff69dea78eb591465289d39e16f35e58389ae779d4f9455aff3a */
     pack_key?: string;
   };
-  'api.ChangeGroupAdminsRequest': {
+  "api.ChangeGroupAdminsRequest": {
     admins?: string[];
   };
-  'api.ChangeGroupMembersRequest': {
+  "api.ChangeGroupMembersRequest": {
     members?: string[];
   };
-  'api.Configuration': {
-    logging?: definitions['api.LoggingConfiguration'];
+  "api.Configuration": {
+    logging?: definitions["api.LoggingConfiguration"];
   };
-  'api.CreateGroupRequest': {
+  "api.CreateGroupRequest": {
     description?: string;
     expiration_time?: number;
     /** @enum {string} */
-    group_link?: 'disabled' | 'enabled' | 'enabled-with-approval';
+    group_link?: "disabled" | "enabled" | "enabled-with-approval";
     members?: string[];
     name?: string;
-    permissions?: definitions['api.GroupPermissions'];
+    permissions?: definitions["api.GroupPermissions"];
   };
-  'api.CreateGroupResponse': {
+  "api.CreateGroupResponse": {
     id?: string;
   };
-  'api.Error': {
+  "api.Error": {
     error?: string;
   };
-  'api.GroupPermissions': {
+  "api.GroupPermissions": {
     /** @enum {string} */
-    add_members?: 'only-admins' | 'every-member';
+    add_members?: "only-admins" | "every-member";
     /** @enum {string} */
-    edit_group?: 'only-admins' | 'every-member';
+    edit_group?: "only-admins" | "every-member";
   };
-  'api.LoggingConfiguration': {
+  "api.LoggingConfiguration": {
     Level?: string;
   };
-  'api.RateLimitChallengeRequest': {
+  "api.RateLimitChallengeRequest": {
     /** @example signalcaptcha://{captcha value} */
     captcha?: string;
     /** @example <challenge token> */
     challenge_token?: string;
   };
-  'api.Reaction': {
+  "api.Reaction": {
     reaction?: string;
     recipient?: string;
     target_author?: string;
     timestamp?: number;
   };
-  'api.Receipt': {
+  "api.Receipt": {
     /** @enum {string} */
-    receipt_type?: 'read' | 'viewed';
+    receipt_type?: "read" | "viewed";
     recipient?: string;
     timestamp?: number;
   };
-  'api.RegisterNumberRequest': {
+  "api.RegisterNumberRequest": {
     captcha?: string;
     use_voice?: boolean;
   };
-  'api.SearchResponse': {
+  "api.SearchResponse": {
     number?: string;
     registered?: boolean;
   };
-  'api.SendMessageError': {
+  "api.SendMessageError": {
     account?: string;
     challenge_tokens?: string[];
     error?: string;
   };
-  'api.SendMessageResponse': {
+  "api.SendMessageResponse": {
     timestamp?: string;
   };
-  'api.SendMessageV1': {
+  "api.SendMessageV1": {
     /** @example '<BASE64 ENCODED DATA>' OR 'data:<MIME-TYPE>;base64,<BASE64 ENCODED DATA>' OR 'data:<MIME-TYPE>;filename=<FILENAME>;base64,<BASE64 ENCODED DATA>' */
     base64_attachment?: string;
     is_group?: boolean;
@@ -1143,7 +1143,7 @@ export type definitions = {
     number?: string;
     recipients?: string[];
   };
-  'api.SendMessageV2': {
+  "api.SendMessageV2": {
     /**
      * @example [
      *   "<BASE64 ENCODED DATA>",
@@ -1153,74 +1153,74 @@ export type definitions = {
      */
     base64_attachments?: string[];
     edit_timestamp?: number;
-    mentions?: definitions['data.MessageMention'][];
+    mentions?: definitions["data.MessageMention"][];
     message?: string;
     notify_self?: boolean;
     number?: string;
     quote_author?: string;
-    quote_mentions?: definitions['data.MessageMention'][];
+    quote_mentions?: definitions["data.MessageMention"][];
     quote_message?: string;
     quote_timestamp?: number;
     recipients?: string[];
     sticker?: string;
     /** @enum {string} */
-    text_mode?: 'normal' | 'styled';
+    text_mode?: "normal" | "styled";
   };
-  'api.SetUsernameRequest': {
+  "api.SetUsernameRequest": {
     /** @example test */
     username?: string;
   };
-  'api.TrustIdentityRequest': {
+  "api.TrustIdentityRequest": {
     /** @example false */
     trust_all_known_keys?: boolean;
     verified_safety_number?: string;
   };
-  'api.TrustModeRequest': {
+  "api.TrustModeRequest": {
     trust_mode?: string;
   };
-  'api.TrustModeResponse': {
+  "api.TrustModeResponse": {
     trust_mode?: string;
   };
-  'api.TypingIndicatorRequest': {
+  "api.TypingIndicatorRequest": {
     recipient?: string;
   };
-  'api.UnregisterNumberRequest': {
+  "api.UnregisterNumberRequest": {
     /** @example false */
     delete_account?: boolean;
     /** @example false */
     delete_local_data?: boolean;
   };
-  'api.UpdateAccountSettingsRequest': {
+  "api.UpdateAccountSettingsRequest": {
     discoverable_by_number?: boolean;
     share_number?: boolean;
   };
-  'api.UpdateContactRequest': {
+  "api.UpdateContactRequest": {
     expiration_in_seconds?: number;
     name?: string;
     recipient?: string;
   };
-  'api.UpdateGroupRequest': {
+  "api.UpdateGroupRequest": {
     base64_avatar?: string;
     description?: string;
     expiration_time?: number;
     name?: string;
   };
-  'api.UpdateProfileRequest': {
+  "api.UpdateProfileRequest": {
     about?: string;
     base64_avatar?: string;
     name?: string;
   };
-  'api.VerifyNumberSettings': {
+  "api.VerifyNumberSettings": {
     pin?: string;
   };
-  'client.About': {
+  "client.About": {
     build?: number;
-    capabilities?: Record<string, string[]>;
+    capabilities?: { [key: string]: string[] };
     mode?: string;
     version?: string;
     versions?: string[];
   };
-  'client.GroupEntry': {
+  "client.GroupEntry": {
     admins?: string[];
     blocked?: boolean;
     id?: string;
@@ -1231,14 +1231,14 @@ export type definitions = {
     pending_invites?: string[];
     pending_requests?: string[];
   };
-  'client.IdentityEntry': {
+  "client.IdentityEntry": {
     added?: string;
     fingerprint?: string;
     number?: string;
     safety_number?: string;
     status?: string;
   };
-  'client.ListContactsResponse': {
+  "client.ListContactsResponse": {
     blocked?: boolean;
     color?: string;
     message_expiration?: string;
@@ -1248,24 +1248,24 @@ export type definitions = {
     username?: string;
     uuid?: string;
   };
-  'client.ListInstalledStickerPacksResponse': {
+  "client.ListInstalledStickerPacksResponse": {
     author?: string;
     installed?: boolean;
     pack_id?: string;
     title?: string;
     url?: string;
   };
-  'client.SetUsernameResponse': {
+  "client.SetUsernameResponse": {
     username?: string;
     username_link?: string;
   };
-  'data.MessageMention': {
+  "data.MessageMention": {
     author?: string;
     length?: number;
     start?: number;
   };
-};
+}
 
-export type operations = {};
+export interface operations {}
 
-export type external = {};
+export interface external {}

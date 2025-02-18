@@ -22,6 +22,6 @@
     "@bitlerjs/nexus-data": "workspace:*",
     "@bitlerjs/nexus-notifications": "workspace:*",
     "nanoid": "^5.0.9",
-    "openapi-fetch": "^0.13.3"
+    "openapi-fetch": "^0.12.5"
   }
 }

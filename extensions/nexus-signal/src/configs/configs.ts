@@ -7,7 +7,8 @@ const signalConfig = createConfig({
   group: 'Integrations',
   description: 'Signal integration',
   schema: Type.Object({
-    apiUrl: Type.String(),
+    host: Type.String(),
+    secure: Type.Boolean(),
   }),
 });
 

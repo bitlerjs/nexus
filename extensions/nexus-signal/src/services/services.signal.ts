@@ -7,48 +7,63 @@ import { SignalSocket } from './services.socket.js';
 
 type ApiReponse<TPath extends keyof paths, TMethod extends string> = TMethod extends keyof paths[TPath]
   ? paths[TPath][TMethod] extends { responses: { 200: { schema: infer U } } }
-  ? U
-  : never
+    ? U
+    : never
   : never;
 
 type ApiBody<TPath extends keyof paths, TMethod extends string> = TMethod extends keyof paths[TPath]
   ? paths[TPath][TMethod] extends { parameters: { body: { data: infer U } } }
-  ? U
-  : never
+    ? U
+    : never
   : never;
 
 type ApiPathParamters<TPath extends keyof paths, TMethod extends string> = TMethod extends keyof paths[TPath]
   ? paths[TPath][TMethod] extends { parameters: { path: infer U } }
-  ? U
-  : never
+    ? U
+    : never
   : never;
 
 type ApiQueryParameters<TPath extends keyof paths, TMethod extends string> = TMethod extends keyof paths[TPath]
   ? paths[TPath][TMethod] extends { parameters: { query: infer U } }
-  ? U
-  : never
+    ? U
+    : never
   : never;
 
-// TODO: FIX
-const host = 'localhost';
-const secure = false;
-
 class SignalService {
-  #client: Client;
   #container: Container;
-  #setupPromise: Promise<SignalSocket[]> | null = null;
+  #config?: {
+    host: string;
+    secure: boolean;
+  };
+  #setupPromise?: Promise<{
+    client: Client;
+    sockets: SignalSocket[];
+  }>;
 
   constructor(container: Container) {
     this.#container = container;
-    this.#client = createClient({
-      host,
-      secure,
-    });
+  }
+
+  public set config(config: { host: string; secure: boolean }) {
+    this.#config = config;
+    this.destroy();
   }
 
   #setup = async () => {
-    const accounts = await this.get('/v1/accounts');
-    if (!accounts) {
+    if (!this.#config) {
+      throw new Error('No config');
+    }
+    const { host, secure } = this.#config;
+    const client = createClient({
+      host,
+      secure,
+    });
+    const response = await client.GET('/v1/accounts');
+    if (response.error) {
+      throw new Error(response.error instanceof Error ? response.error.message : 'API error');
+    }
+    const accounts = response.data as string[];
+    if (!accounts || accounts.length === 0) {
       throw new Error('No accounts found');
     }
     const sockets = accounts.map(
@@ -61,7 +76,7 @@ class SignalService {
         }),
     );
 
-    return sockets;
+    return { client, sockets };
   };
 
   public setup = async () => {
@@ -75,14 +90,15 @@ class SignalService {
     if (!this.#setupPromise) {
       return;
     }
-
-    const sockets = await this.#setupPromise;
+    const promise = this.#setupPromise;
+    this.#setupPromise = undefined;
+    const { sockets } = await promise;
     sockets.forEach((socket) => socket.destroy());
   };
 
   public getAccounts = async () => {
-    const accounts = await this.setup();
-    return accounts.map((account) => account.id);
+    const { sockets } = await this.setup();
+    return sockets.map((account) => account.id);
   };
 
   public get = async <TPath extends keyof paths>(
@@ -92,7 +108,8 @@ class SignalService {
       path?: ApiPathParamters<TPath, 'get'>;
     } = {},
   ): Promise<ApiReponse<TPath, 'get'>> => {
-    const { data, error } = await this.#client.GET(path as any, {
+    const { client } = await this.setup();
+    const { data, error } = await client.GET(path as any, {
       params: {
         query: params.query,
         path: params.path,
@@ -113,7 +130,8 @@ class SignalService {
       path?: ApiPathParamters<TPath, 'post'>;
     },
   ): Promise<ApiReponse<TPath, 'get'>> => {
-    const { data, error } = await this.#client.POST(path as any, {
+    const { client } = await this.setup();
+    const { data, error } = await client.POST(path as any, {
       body: params.body,
       params: {
         query: params.query,
