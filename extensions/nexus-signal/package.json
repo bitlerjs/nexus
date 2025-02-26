@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@bitlerjs/nexus": "workspace:*",
+    "@bitlerjs/nexus-knowledge-base": "workspace:*",
     "@bitlerjs/nexus-configs": "workspace:*",
     "@bitlerjs/nexus-data": "workspace:*",
     "@bitlerjs/nexus-notifications": "workspace:*",

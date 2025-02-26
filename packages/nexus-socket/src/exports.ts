@@ -82,6 +82,63 @@ const requests = {
     }),
     output: Type.Object({}),
   },
+  'entity.list': {
+    input: Type.Object({}),
+    output: Type.Array(
+      Type.Object({
+        kind: Type.String(),
+        name: Type.String(),
+        description: Type.String(),
+        find: Type.Boolean(),
+        create: Type.Boolean(),
+        update: Type.Boolean(),
+      }),
+    ),
+  },
+  'entity.describe': {
+    input: Type.Object({
+      kind: Type.String(),
+    }),
+    output: Type.Object({
+      kind: Type.String(),
+      name: Type.String(),
+      description: Type.String(),
+      item: Type.Any(),
+      find: Type.Any(),
+      create: Type.Any(),
+      update: Type.Any(),
+    }),
+  },
+  'entity.get': {
+    input: Type.Object({
+      kind: Type.String(),
+      ids: Type.Array(Type.String()),
+    }),
+    output: Type.Array(Type.Unknown()),
+  },
+  'entity.find': {
+    input: Type.Object({
+      kind: Type.String(),
+      input: Type.Unknown(),
+    }),
+    output: Type.Array(Type.Unknown()),
+  },
+  'entity.create': {
+    input: Type.Object({
+      kind: Type.String(),
+      input: Type.Unknown(),
+    }),
+    output: Type.Object({
+      id: Type.String(),
+    }),
+  },
+  'entity.update': {
+    input: Type.Object({
+      kind: Type.String(),
+      input: Type.Unknown(),
+    }),
+    output: Type.Object({}),
+  },
 } satisfies Record<string, { input: TSchema; output: TSchema }>;
 
 type RequestType = keyof typeof requests;

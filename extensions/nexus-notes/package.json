@@ -15,6 +15,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@bitlerjs/nexus-knowledge-base": "workspace:*",
     "@bitlerjs/nexus": "workspace:*",
     "@bitlerjs/nexus-data": "workspace:*"
   }

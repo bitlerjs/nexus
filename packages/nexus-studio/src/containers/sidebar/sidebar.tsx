@@ -120,6 +120,15 @@ const Sidebar = () => {
                   <IdCard size={22} />
                 </div>
               }
+              onPress={() =>
+                addScreen({
+                  kind: 'entities',
+                  id: 'entities',
+                  title: 'Entities',
+                  props: {},
+                  focus: true,
+                })
+              }
             />
             <ListboxItem
               title="Databases"

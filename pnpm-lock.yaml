@@ -68,6 +68,9 @@ importers:
       '@bitlerjs/nexus-homeassistant':
         specifier: workspace:*
         version: link:../../extensions/nexus-homeassistant
+      '@bitlerjs/nexus-knowledge-base':
+        specifier: workspace:*
+        version: link:../../extensions/nexus-knowledge-base
       '@bitlerjs/nexus-linear':
         specifier: workspace:*
         version: link:../../extensions/nexus-linear
@@ -95,6 +98,9 @@ importers:
       '@bitlerjs/nexus-timers':
         specifier: workspace:*
         version: link:../../extensions/nexus-timers
+      '@bitlerjs/nexus-todos':
+        specifier: workspace:*
+        version: link:../../extensions/nexus-todos
       '@bitlerjs/nexus-typescript':
         specifier: workspace:*
         version: link:../../packages/nexus-typescript
@@ -199,6 +205,9 @@ importers:
       '@bitlerjs/nexus-configs':
         specifier: workspace:*
         version: link:../../packages/nexus-configs
+      '@bitlerjs/nexus-knowledge-base':
+        specifier: workspace:*
+        version: link:../nexus-knowledge-base
       eventemitter3:
         specifier: ^5.0.1
         version: 5.0.1
@@ -244,6 +253,25 @@ importers:
         specifier: ^5.7.2
         version: 5.7.3
 
+  extensions/nexus-knowledge-base:
+    dependencies:
+      '@bitlerjs/nexus':
+        specifier: workspace:*
+        version: link:../../packages/nexus
+      '@bitlerjs/nexus-data':
+        specifier: workspace:*
+        version: link:../../packages/nexus-data
+      nanoid:
+        specifier: ^5.0.9
+        version: 5.0.9
+    devDependencies:
+      '@bitlerjs/nexus-config':
+        specifier: workspace:*
+        version: link:../../packages/nexus-config
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.3
+
   extensions/nexus-linear:
     dependencies:
       '@bitlerjs/nexus':
@@ -252,6 +280,9 @@ importers:
       '@bitlerjs/nexus-configs':
         specifier: workspace:*
         version: link:../../packages/nexus-configs
+      '@bitlerjs/nexus-knowledge-base':
+        specifier: workspace:*
+        version: link:../nexus-knowledge-base
       '@linear/sdk':
         specifier: ^38.0.0
         version: 38.0.0
@@ -271,6 +302,9 @@ importers:
       '@bitlerjs/nexus-data':
         specifier: workspace:*
         version: link:../../packages/nexus-data
+      '@bitlerjs/nexus-knowledge-base':
+        specifier: workspace:*
+        version: link:../nexus-knowledge-base
     devDependencies:
       '@bitlerjs/nexus-config':
         specifier: workspace:*
@@ -309,6 +343,9 @@ importers:
       '@bitlerjs/nexus-data':
         specifier: workspace:*
         version: link:../../packages/nexus-data
+      '@bitlerjs/nexus-knowledge-base':
+        specifier: workspace:*
+        version: link:../nexus-knowledge-base
       '@bitlerjs/nexus-notifications':
         specifier: workspace:*
         version: link:../nexus-notifications
@@ -343,6 +380,41 @@ importers:
       nanoid:
         specifier: ^5.0.9
         version: 5.0.9
+    devDependencies:
+      '@bitlerjs/nexus-config':
+        specifier: workspace:*
+        version: link:../../packages/nexus-config
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.3
+
+  extensions/nexus-todos:
+    dependencies:
+      '@bitlerjs/nexus':
+        specifier: workspace:*
+        version: link:../../packages/nexus
+      '@bitlerjs/nexus-data':
+        specifier: workspace:*
+        version: link:../../packages/nexus-data
+      '@bitlerjs/nexus-knowledge-base':
+        specifier: workspace:*
+        version: link:../nexus-knowledge-base
+    devDependencies:
+      '@bitlerjs/nexus-config':
+        specifier: workspace:*
+        version: link:../../packages/nexus-config
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.3
+
+  extensions/nexus-tree:
+    dependencies:
+      '@bitlerjs/nexus':
+        specifier: workspace:*
+        version: link:../../packages/nexus
+      '@bitlerjs/nexus-data':
+        specifier: workspace:*
+        version: link:../../packages/nexus-data
     devDependencies:
       '@bitlerjs/nexus-config':
         specifier: workspace:*

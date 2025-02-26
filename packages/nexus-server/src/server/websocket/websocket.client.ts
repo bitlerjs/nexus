@@ -1,4 +1,11 @@
-import { Container, Continuation, RequestContext, TasksService } from '@bitlerjs/nexus';
+import {
+  Container,
+  Continuation,
+  EntityProvidersService,
+  parseWithSchema,
+  RequestContext,
+  TasksService,
+} from '@bitlerjs/nexus';
 import { createResponder, RequestHandler } from '@bitlerjs/nexus-socket';
 import { EventsService } from '@bitlerjs/nexus/dist/events/events.js';
 import { WebSocket } from '@fastify/websocket';
@@ -51,6 +58,12 @@ class WebSocketClient {
       'event.unsubscribe': this.#onEventUnsubscribe,
       'event.list': this.#onEventList,
       'event.describe': this.#onEventDescribe,
+      'entity.list': this.#onEntityList,
+      'entity.describe': this.#onEntityDescribe,
+      'entity.get': this.#onEntityGet,
+      'entity.find': this.#onEntityFind,
+      'entity.create': this.#onEntityCreate,
+      'entity.update': this.#onEntityUpdate,
     });
   }
 
@@ -58,6 +71,105 @@ class WebSocketClient {
     for (const subscription of this.#subscriptions.values()) {
       subscription.abortController.abort();
     }
+  };
+
+  #onEntityList: RequestHandler<'entity.list'> = async () => {
+    const { container } = this.#options;
+    const entitiesService = container.get(EntityProvidersService);
+    return entitiesService.list().map((entity) => ({
+      kind: entity.kind,
+      name: entity.name,
+      description: entity.description,
+      find: !!entity.find,
+      create: !!entity.create,
+      update: !!entity.update,
+    }));
+  };
+
+  #onEntityDescribe: RequestHandler<'entity.describe'> = async ({ kind }) => {
+    const { container } = this.#options;
+    const entitiesService = container.get(EntityProvidersService);
+    const entity = entitiesService.get(kind);
+    if (!entity) {
+      throw new Error(`Entity ${kind} not found`);
+    }
+    return {
+      kind: entity.kind,
+      name: entity.name,
+      description: entity.description,
+      item: entity.schema,
+      find: entity.find?.schema,
+      create: entity.create?.schema,
+      update: entity.update?.schema,
+    };
+  };
+
+  #onEntityFind: RequestHandler<'entity.find'> = async ({ kind, input }) => {
+    const { container } = this.#options;
+    const entitiesService = container.get(EntityProvidersService);
+    const entity = entitiesService.get(kind);
+    if (!entity) {
+      throw new Error(`Entity ${kind} not found`);
+    }
+    if (!entity.find) {
+      throw new Error(`Entity ${kind} does not support find`);
+    }
+    const result = await entity.find.handler({
+      input,
+      requestContext: this.#options.requestContext,
+      container,
+    });
+    return result.map((item) => parseWithSchema(entity.schema, item));
+  };
+
+  #onEntityCreate: RequestHandler<'entity.create'> = async ({ kind, input }) => {
+    const { container } = this.#options;
+    const entitiesService = container.get(EntityProvidersService);
+    const entity = entitiesService.get(kind);
+    if (!entity) {
+      throw new Error(`Entity ${kind} not found`);
+    }
+    if (!entity.create) {
+      throw new Error(`Entity ${kind} does not support create`);
+    }
+    const id = await entity.create.handler({
+      input,
+      requestContext: this.#options.requestContext,
+      container,
+    });
+    return { id };
+  };
+
+  #onEntityUpdate: RequestHandler<'entity.update'> = async ({ kind, input }) => {
+    const { container } = this.#options;
+    const entitiesService = container.get(EntityProvidersService);
+    const entity = entitiesService.get(kind);
+    if (!entity) {
+      throw new Error(`Entity ${kind} not found`);
+    }
+    if (!entity.update) {
+      throw new Error(`Entity ${kind} does not support update`);
+    }
+    await entity.update.handler({
+      input,
+      requestContext: this.#options.requestContext,
+      container,
+    });
+    return {};
+  };
+
+  #onEntityGet: RequestHandler<'entity.get'> = async ({ kind, ids }) => {
+    const { container } = this.#options;
+    const entitiesService = container.get(EntityProvidersService);
+    const entity = entitiesService.get(kind);
+    if (!entity) {
+      throw new Error(`Entity ${kind} not found`);
+    }
+    return entity.get({
+      input: { ids },
+      requestContext: this.#options.requestContext,
+      container,
+    });
   };
 
   #onTaskRun: RequestHandler<'task.run'> = async ({ kind, input, continuation }) => {

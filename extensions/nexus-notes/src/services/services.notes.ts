@@ -1,5 +1,6 @@
 import { Container, Static } from '@bitlerjs/nexus';
 import { Databases, FeatureExtractor } from '@bitlerjs/nexus-data';
+import { KnowledgeBaseService } from '@bitlerjs/nexus-knowledge-base';
 
 import { dbConfig, EXTRACTOR_MODEL, NoteRow } from '../database/database.js';
 import { createNoteSchema, findNotesSchema, noteSchema, updateNoteSchema } from '../schemas/schemas.js';
@@ -49,6 +50,14 @@ class NotesService {
       updatedAt: new Date(),
     });
 
+    const knowledgeBaseService = this.#container.get(KnowledgeBaseService);
+    const { noteEntity } = await import('../entities/entities.note.js');
+    await knowledgeBaseService.add({
+      entity: noteEntity,
+      id,
+      documents: [note.title, note.content],
+    });
+
     return id;
   };
 
@@ -95,9 +104,6 @@ class NotesService {
     }
     if (options.paths) {
       query = query.whereIn('path', options.paths);
-    }
-    if (options.semanticText) {
-      query = query.where('content', 'like', `%${options.semanticText}%`);
     }
     if (options.updatedAt) {
       if (options.updatedAt.gte) {

@@ -28,7 +28,9 @@
     "@bitlerjs/nexus-timers": "workspace:*",
     "@bitlerjs/nexus-calendars": "workspace:*",
     "@bitlerjs/nexus-signal": "workspace:*",
+    "@bitlerjs/nexus-todos": "workspace:*",
     "@bitlerjs/nexus-notifications": "workspace:*",
+    "@bitlerjs/nexus-knowledge-base": "workspace:*",
     "dotenv": "^16.4.7"
   }
 }

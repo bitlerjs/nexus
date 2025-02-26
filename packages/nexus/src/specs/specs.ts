@@ -23,7 +23,12 @@ type Specs = {
     {
       name: string;
       description: string;
-      schema: JSONSchema4Type;
+      schemas: {
+        item: JSONSchema4Type;
+        find?: JSONSchema4Type;
+        create?: JSONSchema4Type;
+        update?: JSONSchema4Type;
+      };
     }
   >;
   sources: Record<
@@ -73,7 +78,12 @@ const generateSpecs = (options: GenerateSpecsOptions): Specs => ({
       {
         name: entityProvider.name,
         description: entityProvider.description,
-        schema: entityProvider.schema,
+        schemas: {
+          item: entityProvider.schema,
+          find: entityProvider.find?.schema,
+          create: entityProvider.create?.schema,
+          update: entityProvider.update?.schema,
+        },
       },
     ]),
   ),

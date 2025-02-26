@@ -6,7 +6,15 @@ type ServerDefinition = {
       output: unknown;
     }
   >;
-  entities: Record<string, unknown>;
+  entities: Record<
+    string,
+    {
+      item: unknown;
+      find?: unknown;
+      create?: unknown;
+      update?: unknown;
+    }
+  >;
   sources: Record<string, unknown>;
   events: Record<
     string,

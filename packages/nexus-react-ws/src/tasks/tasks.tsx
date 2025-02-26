@@ -63,10 +63,13 @@ const useHasTask = (kind: string) => {
 
 const useTask = (kind: string) => {
   const { client, queryClient } = useNexus();
-  const { data, ...rest } = useQuery({
-    queryKey: ['tasks.describe', kind],
-    queryFn: () => client?.tasks.describe(kind),
-  });
+  const { data, ...rest } = useQuery(
+    {
+      queryKey: ['tasks.describe', kind],
+      queryFn: () => client?.tasks.describe(kind),
+    },
+    queryClient,
+  );
 
   const run = useTaskMutation({
     kind,

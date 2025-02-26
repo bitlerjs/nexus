@@ -4,6 +4,7 @@ import { ServerDefinition } from '@bitlerjs/nexus-client';
 import { Tasks } from './tasks/tasks.js';
 import { Events } from './events/events.js';
 import { Socket } from './socket/socket.js';
+import { Entities } from './entities/entities.js';
 
 type ClientOptions = {
   url: string;
@@ -19,6 +20,7 @@ class Client<TSchema extends ServerDefinition = ServerDefinition> extends EventE
   #socket: Socket;
   #tasks: Tasks<TSchema>;
   #events: Events<TSchema>;
+  #entities: Entities<TSchema>;
   #connected = false;
 
   constructor(options: ClientOptions) {
@@ -26,6 +28,7 @@ class Client<TSchema extends ServerDefinition = ServerDefinition> extends EventE
     this.#socket = new Socket({ url: options.url, headers: options.headers });
     this.#tasks = new Tasks({ socket: this.#socket });
     this.#events = new Events({ socket: this.#socket });
+    this.#entities = new Entities({ socket: this.#socket });
 
     this.#socket.on('connected', this.#onConnect);
     this.#socket.on('close', this.#onDisconnect);
@@ -41,6 +44,10 @@ class Client<TSchema extends ServerDefinition = ServerDefinition> extends EventE
 
   public get events() {
     return this.#events;
+  }
+
+  public get entities() {
+    return this.#entities;
   }
 
   public close = () => {

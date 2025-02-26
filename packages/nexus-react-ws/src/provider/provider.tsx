@@ -4,6 +4,7 @@ import React, { createContext, ReactNode, useCallback, useContext, useEffect, us
 import { TasksProvider } from '../tasks/tasks.js';
 import { EventsProvider } from '../events/events.js';
 import { useLogin } from '../login/login.js';
+import { EntitiesProvider } from '../entities/entities.js';
 
 type LoginState = 'pending' | 'not-logged-in' | 'logging-in' | 'logged-in';
 
@@ -61,7 +62,9 @@ const NexusProvider = ({ children }: NexusProviderProps) => {
     <QueryClientProvider client={props.queryClient}>
       <NexusContext.Provider value={props}>
         <EventsProvider>
-          <TasksProvider>{children}</TasksProvider>
+          <TasksProvider>
+            <EntitiesProvider>{children}</EntitiesProvider>
+          </TasksProvider>
         </EventsProvider>
       </NexusContext.Provider>
     </QueryClientProvider>

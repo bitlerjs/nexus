@@ -46,7 +46,15 @@ const generateTypesContent = async ({ specs, name }: GenerateTypesContentOptions
     entities: Type.Object(
       Object.fromEntries(
         Object.entries(specs.entities).map(([name, spec]) => {
-          return [name, Type.Unsafe(spec.schema as any)];
+          return [
+            name,
+            Type.Object({
+              item: Type.Unsafe(spec.schemas.item as any),
+              find: spec.schemas.find ? Type.Unsafe(spec.schemas.find as any) : Type.Never(),
+              create: spec.schemas.create ? Type.Unsafe(spec.schemas.create as any) : Type.Never(),
+              update: spec.schemas.update ? Type.Unsafe(spec.schemas.update as any) : Type.Never(),
+            }),
+          ];
         }),
       ),
     ),

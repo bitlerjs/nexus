@@ -1,16 +1,17 @@
-import { createExtension, TasksService } from '@bitlerjs/nexus';
+import { createExtension, EntityProvidersService, TasksService } from '@bitlerjs/nexus';
 import { ConfigService } from '@bitlerjs/nexus-configs';
 
 import { SignalService } from './services/services.signal.js';
 import { signalConfig } from './configs/configs.js';
-import { getContactsTask } from './tasks/tasks.get-contacts.js';
-import { getGroupsTask } from './tasks/tasks.get-groups.js';
 import { sendTask } from './tasks/tasks.send.js';
+import { signalGroup } from './entities/group.js';
+import { signalContact } from './entities/contact.js';
 
 const signal = createExtension({
   setup: async ({ container }) => {
     const configsService = container.get(ConfigService);
     const tasksService = container.get(TasksService);
+    const entityProviderService = container.get(EntityProvidersService);
 
     configsService.register([signalConfig]);
 
@@ -19,12 +20,15 @@ const signal = createExtension({
       handler: async (config) => {
         const signalService = container.get(SignalService);
         if (config) {
+          await signalService.destroy();
           signalService.config = config;
           await signalService.setup();
-          tasksService.register([getContactsTask, getGroupsTask, sendTask]);
+          tasksService.register([sendTask]);
+          entityProviderService.register([signalGroup, signalContact]);
         } else {
-          tasksService.unregister([getContactsTask, getGroupsTask, sendTask]);
+          tasksService.unregister([sendTask]);
           await signalService.destroy();
+          entityProviderService.unregister([signalGroup, signalContact]);
         }
       },
     });

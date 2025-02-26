@@ -19,6 +19,26 @@ class EntityProvidersService {
     this.#entityProviders = new Map();
   }
 
+  public get = (kind: string) => {
+    const config = this.#entityProviders.get(kind);
+    if (!config) {
+      throw new Error(`Entity provider not found: ${kind}`);
+    }
+    return config.provider;
+  };
+
+  public unregister = (providers: EntityProvider<any, any, any, any>[]) => {
+    const tasksService = this.#container.get(TasksService);
+    providers.forEach((provider) => {
+      const config = this.#entityProviders.get(provider.kind);
+      if (!config) {
+        return;
+      }
+      tasksService.unregister(config.tasks);
+      this.#entityProviders.delete(provider.kind);
+    });
+  };
+
   public register = (providers: EntityProvider<any, any, any, any>[]) => {
     const tasksService = this.#container.get(TasksService);
     providers.forEach((provider) => {

@@ -9,22 +9,21 @@ import { notes } from '@bitlerjs/nexus-notes';
 import { timers } from '@bitlerjs/nexus-timers';
 import { signal } from '@bitlerjs/nexus-signal';
 import { notifications } from '@bitlerjs/nexus-notifications';
-
-import { todos } from './src/extension.js';
+import { knowledgeBase } from '@bitlerjs/nexus-knowledge-base';
 
 const config = defineConfig({
   oidc: process.env.OIDC_ISSUER_URL
     ? {
-      issuerUrl: process.env.OIDC_ISSUER_URL,
-      clientId: process.env.OIDC_CLIENT_ID,
-    }
+        issuerUrl: process.env.OIDC_ISSUER_URL,
+        clientId: process.env.OIDC_CLIENT_ID,
+      }
     : undefined,
   extensions: [
-    defineExtension(todos, {}),
     defineExtension(typescript, {}),
     defineExtension(llmExtension, {
       defaultModel: 'openai.gpt-4o-mini',
     }),
+    defineExtension(knowledgeBase, {}),
     defineExtension(signal, {}),
     defineExtension(notifications, {}),
     defineExtension(linear, {}),

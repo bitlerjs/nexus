@@ -1,7 +1,10 @@
 import { Container, Continuation, RequestContext, TasksService } from '@bitlerjs/nexus';
 import { tasks as notificationTasks } from '@bitlerjs/nexus-notifications';
+import { Databases } from '@bitlerjs/nexus-data';
+import { KnowledgeBaseService } from '@bitlerjs/nexus-knowledge-base';
 
 import { Message } from '../types/message.js';
+import { dbConfig, MessageRow } from '../databases/databases.js';
 
 type SignalSocketOptions = {
   id: string;
@@ -36,10 +39,28 @@ class SignalSocket {
   };
 
   #onmessage = async (event: MessageEvent) => {
-    const { container } = this.#options;
+    const { container, id } = this.#options;
     const tasksService = container.get(TasksService);
     const message: Message = JSON.parse(event.data);
     if (message.envelope.dataMessage) {
+      const dbs = container.get(Databases);
+      const db = await dbs.get(dbConfig);
+      const knowledgeBaseService = container.get(KnowledgeBaseService);
+      const messageId = `signal-${message.envelope.sourceUuid}-${message.envelope.timestamp}`;
+      await db<MessageRow>('messages').insert({
+        id: messageId,
+        timestamp: new Date(),
+        senderId: message.envelope.source,
+        recipientId: id,
+        isMe: false,
+        // groupId: message.envelope.dataMessage.message, TODO:
+      });
+      const { messageEntity } = await import('../entities/message.js');
+      await knowledgeBaseService.add({
+        entity: messageEntity,
+        id: messageId,
+        documents: [message.envelope.dataMessage.message],
+      });
       await tasksService.run({
         task: notificationTasks.addNotification,
         input: {
